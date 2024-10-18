@@ -1,0 +1,20 @@
+Trodo test assignment
+
+Overview
+
+In this assignment, we are going to create a NodeJS back-end service that captures historical currency exchange rates on a daily basis and presents them in a front-end interface.
+
+Technology requirements
+• Back-end service: NestJS, ExpressJS or other NodeJS based framework
+
+Front-end interface: VueJS or React
+
+Additional details
+Currency changes are to be imported using following API service (free plan): https://anyapi.io/
+• Data should be stored in SQL based database
+• Data should be refreshed with the most recent EUR to GBP, USD, AUD exchange rates on daily basis
+• Front-end interface should allow user to select target currency and output a view as illustrated in the mockup file attached (Test Assignment.jpg)
+
+Submission Format
+• Submission should be uploaded in GitHub as a private repository and shared with the following GitHub user - TrodoIT
+• Any additional information on how to setup applications should be provided if not already part of the repository
