@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CurrencyRates } from '../entity/currency-rates.entity';
+import { CurrencyRates } from '../entity/Currency.entity';
 import { Cron } from '@nestjs/schedule';
 
 @Injectable()
