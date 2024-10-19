@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CurrencyModule } from './currency/currency.module';
-import { CurrencyRates } from './db/entities/CurrencyRates.entity'; // Import the entity
+import { CurrencyRate } from './db/entities/CurrencyRate.entity'; // Import the entity
 
 @Module({
   imports: [
@@ -22,8 +22,9 @@ import { CurrencyRates } from './db/entities/CurrencyRates.entity'; // Import th
         username: configService.get<string>('DATABASE_USERNAME'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        entities: [CurrencyRates], // Use the entity directly here
+        entities: [CurrencyRate], // Use the entity directly here
         synchronize: true,
+        logging: true
       }),
       inject: [ConfigService],
     }),

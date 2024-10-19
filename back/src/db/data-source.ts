@@ -14,8 +14,8 @@ export const AppDataSource = new DataSource({
   username: configService.get<string>('DATABASE_USERNAME', 'root'), // Default username
   password: configService.get<string>('DATABASE_PASSWORD', ''), // Default to an empty password
   database: configService.get<string>('DATABASE_NAME', 'test'), // Default database name
-  entities: [`${__dirname}/../**/**/*.entity.{js,ts}'`], // Adjusted path for entities
-  migrations: [`${__dirname}/../**/**/*{.ts,.js}`], // Adjusted path for migrations
+  entities: [`${__dirname}/../db/entities/*.entity.{js,ts}`],
+  migrations: [`${__dirname}/../db/migrations/*.{js,ts}`],  
   synchronize: true, // Use 'true' only in development
 });
 

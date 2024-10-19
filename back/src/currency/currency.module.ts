@@ -4,12 +4,12 @@ import { CurrencyController } from './currency.controller';
 import { CurrencyService } from './currency.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
-import { CurrencyRates } from '../db/entities/CurrencyRates.entity';
+import { CurrencyRate } from '../db/entities/CurrencyRate.entity';
 
 @Module({
   imports: [
     HttpModule,
-    TypeOrmModule.forFeature([CurrencyRates])
+    TypeOrmModule.forFeature([CurrencyRate])
   ],
   controllers: [CurrencyController],
   providers: [CurrencyService],

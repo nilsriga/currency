@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { CurrencyService } from './currency/currency.service';
+// import { CurrencyService } from './currency/currency.service';
 
 async function bootstrap() {
   // const app = await NestFactory.createApplicationContext(AppModule);
