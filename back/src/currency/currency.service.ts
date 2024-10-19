@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CurrencyRates } from '../entity/Currency.entity';
+import { CurrencyRates } from '../db/entities/CurrencyRates.entity';
 import { Cron } from '@nestjs/schedule';
 
 @Injectable()
@@ -30,11 +30,17 @@ export class CurrencyService {
                 this.httpService.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${apiKey}`)
             );
             const data = response.data;
+
+            // Log data structure to see how it looks
+
             const currencyRate = new CurrencyRates();
             currencyRate.date = new Date(data.lastUpdate * 1000); // Convert timestamp to Date
             currencyRate.base = data.base;
             currencyRate.rates = data.rates;
+
+            // Save the data
             await this.currencyRateRepository.save(currencyRate);
+            console.log('Data saved successfully.');
         } catch (error) {
             console.error('Error fetching currency rates:', error);
         }
@@ -47,3 +53,4 @@ export class CurrencyService {
         });
     }
 }
+

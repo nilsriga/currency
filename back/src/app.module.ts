@@ -1,30 +1,35 @@
+// src/app.module.ts
+
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
-import { HttpModule } from '@nestjs/axios';
 import { CurrencyModule } from './currency/currency.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
-
+import { CurrencyRates } from './db/entities/CurrencyRates.entity'; // Import the entity
 
 @Module({
   imports: [
-    HttpModule,
-    CurrencyModule,
-    ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'pass',
-      database: 'currencies',
-      entities: ["src/**/*.entity{.ts,.js}"],
-      migrations: ["src/db/migrations/*{.ts,.js}"],
-      synchronize: true,
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('DATABASE_HOST'),
+        port: configService.get<number>('DATABASE_PORT'),
+        username: configService.get<string>('DATABASE_USERNAME'),
+        password: configService.get<string>('DATABASE_PASSWORD'),
+        database: configService.get<string>('DATABASE_NAME'),
+        entities: [CurrencyRates], // Use the entity directly here
+        synchronize: true,
+      }),
+      inject: [ConfigService],
+    }),
+    CurrencyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

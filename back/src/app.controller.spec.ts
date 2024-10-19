@@ -15,8 +15,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it(`It should return : "Available endpoints: \n - GET '/currency'"`, () => {
+      expect(appController.getRoutes()).toBe(`Available endpoints: \n - GET '/currency'`);
     });
   });
 });

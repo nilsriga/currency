@@ -4,6 +4,8 @@ export class CurrencyRates1729237554127 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
 
+      console.log("Running migration: 1729237554127-currency-rates");
+
         await queryRunner.query(`
             CREATE TABLE currency_rate (
               id INT AUTO_INCREMENT PRIMARY KEY,
