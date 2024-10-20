@@ -1,45 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchRates, setSelectedCurrency, setPage } from './Components/currencySlice';
+import CurrencySelector from './Components/CurrencySelector';
 
 function App() {
-  const [rates, setRates] = useState([]);
-  const [selectedCurrency, setSelectedCurrency] = useState('usd');
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const { rates, selectedCurrency, currentPage, totalPages, error } = useSelector((state) => state.currency);
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/currency/${selectedCurrency}?page=1&limit=10`)
-      .then(response => {
-        setRates(response.data.data);
-      })
-      .catch(error => {
-        console.error(error);
-        setError('Failed to fetch currency data.');
-      });
-  }, [selectedCurrency]);
+    dispatch(fetchRates({ currency: selectedCurrency, page: currentPage }));
+  }, [selectedCurrency, currentPage, dispatch]);
 
   const handleCurrencyChange = (e) => {
-    setSelectedCurrency(e.target.value.toLowerCase());
+    dispatch(setSelectedCurrency(e.target.value.toLowerCase()));
   };
+
+  const handlePageChange = (newPage) => {
+    dispatch(setPage(newPage));
+  };
+
+  const currentRates = rates[selectedCurrency]?.[currentPage] || [];
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-4">Currency Rates for EUR</h1>
-      <div className="mb-4">
-        <label htmlFor="currency" className="mr-2">Select Currency:</label>
-        <select
-          id="currency"
-          value={selectedCurrency.toUpperCase()}
-          onChange={handleCurrencyChange}
-          className="p-2 border rounded"
-        >
-          <option value="usd">USD</option>
-          <option value="jpy">JPY</option>
-          <option value="gbp">GBP</option>
-          <option value="aud">AUD</option>
-          <option value="cny">CNY</option>
-          {/* Add more options as needed */}
-        </select>
-      </div>
+      <h1 className="text-2xl font-bold text-center mb-4">Currency Rates for {selectedCurrency.toUpperCase()}</h1>
+      <CurrencySelector
+        selectedCurrency={selectedCurrency}
+        handleCurrencyChange={handleCurrencyChange}
+      />
       {error && <p className="text-red-500 text-center">{error}</p>}
       <table className="table-auto w-full text-center border-collapse">
         <thead>
@@ -49,8 +37,8 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {rates.length > 0 ? (
-            rates.map(rate => (
+          {currentRates.length > 0 ? (
+            currentRates.map(rate => (
               <tr key={rate.id}>
                 <td className="border px-4 py-2">{new Date(rate.date).toLocaleDateString('en-GB')}</td>
                 <td className="border px-4 py-2">{parseFloat(rate.rate).toFixed(4)}</td>
@@ -63,6 +51,23 @@ function App() {
           )}
         </tbody>
       </table>
+      <div className="flex justify-center mt-4">
+        <button
+          className="px-4 py-2 mx-2 bg-gray-300 rounded"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span className="px-4 py-2">{currentPage} / {totalPages}</span>
+        <button
+          className="px-4 py-2 mx-2 bg-gray-300 rounded"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 }
