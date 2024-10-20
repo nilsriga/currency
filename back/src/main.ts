@@ -7,8 +7,15 @@ async function bootstrap() {
   // const currencyService = app.get(CurrencyService);
   // await currencyService.fetchAndStoreRates();
   // await app.close();
-
+  
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors({
+    origin: 'http://localhost:3001', // The frontend URL
+    methods: 'GET',
+    credentials: true,
+  });
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
