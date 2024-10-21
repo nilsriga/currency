@@ -1,29 +1,45 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
+
+interface Rate {
+  id: number;
+  date: string;
+  rate: string;
+}
+
+interface CurrencyState {
+  rates: Record<string, Record<number, Rate[]>>;
+  selectedCurrency: string;
+  currentPage: number;
+  totalPages: number;
+  error: string | null;
+}
+
+const initialState: CurrencyState = {
+  rates: {},
+  selectedCurrency: 'usd',
+  currentPage: 1,
+  totalPages: 1,
+  error: null,
+};
 
 export const fetchRates = createAsyncThunk(
   'currency/fetchRates',
-  async ({ currency, page }) => {
+  async ({ currency, page }: { currency: string; page: number }) => {
     const response = await axios.get(`http://localhost:3000/currency/${currency}?page=${page}&limit=10`);
-    return { data: response.data.data, currency, page, totalPages: response.data.totalPages };
+    return { data: response.data.data as Rate[], currency, page, totalPages: response.data.totalPages };
   }
 );
 
 const currencySlice = createSlice({
   name: 'currency',
-  initialState: {
-    rates: {},
-    selectedCurrency: 'usd',
-    currentPage: 1,
-    totalPages: 1,
-    error: null,
-  },
+  initialState,
   reducers: {
-    setSelectedCurrency: (state, action) => {
+    setSelectedCurrency: (state, action: PayloadAction<string>) => {
       state.selectedCurrency = action.payload;
-      state.currentPage = 1; // Reset to first page when currency changes
+      state.currentPage = 1;
     },
-    setPage: (state, action) => {
+    setPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload;
     },
   },
@@ -36,8 +52,9 @@ const currencySlice = createSlice({
         }
         state.rates[currency][page] = data;
         state.totalPages = totalPages;
+        state.error = null;
       })
-      .addCase(fetchRates.rejected, (state, action) => {
+      .addCase(fetchRates.rejected, (state) => {
         state.error = 'Failed to fetch currency data.';
       });
   },

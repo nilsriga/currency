@@ -30,16 +30,22 @@ export class CurrencyService {
             const data = response.data;
             const date = new Date(data.lastUpdate * 1000); // Convert timestamp to Date
 
-            const currencyRateEntities = Object.entries(data.rates).map(([currency, rate]) => {
-                const currencyRate = new CurrencyRate();
-                currencyRate.date = date;
-                currencyRate.currency = currency;
-                currencyRate.rate = rate as number;
-                return currencyRate;
-            });
+            // Iterate over the rates and save them individually if they don't exist
+            for (const [currency, rate] of Object.entries(data.rates)) {
+                // Check if the currency rate for the given date and currency already exists
+                const existingRate = await this.currencyRateRepository.findOne({
+                    where: { date, currency }
+                });
 
-            // Save all the currency rates at once
-            await this.currencyRateRepository.save(currencyRateEntities);
+                // If the rate doesn't exist, create a new record
+                if (!existingRate) {
+                    const currencyRate = new CurrencyRate();
+                    currencyRate.date = date;
+                    currencyRate.currency = currency;
+                    currencyRate.rate = rate as number;
+                    await this.currencyRateRepository.save(currencyRate);
+                }
+            }
         } catch (error) {
             console.error('Error fetching currency rates:', error);
         }
@@ -47,17 +53,17 @@ export class CurrencyService {
 
     async getRatesByCurrency(currency: string, page: number = 1, limit: number = 10) {
         const [results, total] = await this.currencyRateRepository.findAndCount({
-          where: { currency: currency.toUpperCase() },
-          order: { date: 'DESC' },
-          skip: (page - 1) * limit,
-          take: limit,
+            where: { currency: currency.toUpperCase() },
+            order: { date: 'DESC' },
+            skip: (page - 1) * limit,
+            take: limit,
         });
-    
+
         return {
-          data: results,
-          currentPage: page,
-          totalPages: Math.ceil(total / limit),
+            data: results,
+            currentPage: page,
+            totalPages: Math.ceil(total / limit),
         };
-      }
+    }
 }
 
