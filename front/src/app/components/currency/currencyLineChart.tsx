@@ -1,4 +1,3 @@
-// src/app/components/currency/CurrencyLineChart.tsx
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
@@ -40,8 +39,23 @@ const CurrencyLineChart: React.FC<CurrencyLineChartProps> = ({ rates }) => {
       .nice()
       .range([height - margin.bottom, margin.top]);
 
+    // Custom "DD.MM" date format for the x-axis
+    const dateFormat = d3.timeFormat('%d.%m'); // Format as "DD.MM"
+
+    // xAxis with type check for Date
     const xAxis = (g: any) =>
-      g.attr('transform', `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x));
+      g
+        .attr('transform', `translate(0,${height - margin.bottom})`)
+        .call(
+          d3.axisBottom(x).tickFormat((domainValue) => {
+            // Check if the domainValue is a Date, then format it
+            if (domainValue instanceof Date) {
+              return dateFormat(domainValue); // Format as "DD.MM"
+            }
+            return ''; // Handle cases where domainValue is not a Date (though it should be a Date)
+          })
+        );
+
     const yAxis = (g: any) =>
       g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(y));
 
