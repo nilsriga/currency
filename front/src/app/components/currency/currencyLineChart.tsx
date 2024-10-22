@@ -42,8 +42,8 @@ const CurrencyLineChart: React.FC<CurrencyLineChartProps> = ({ rates }) => {
     // Custom "DD.MM" date format for the x-axis
     const dateFormat = d3.timeFormat('%d.%m'); // Format as "DD.MM"
 
-    // xAxis with type check for Date
-    const xAxis = (g: any) =>
+    // Define the correct type for 'g' as SVGGElement
+    const xAxis = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
       g
         .attr('transform', `translate(0,${height - margin.bottom})`)
         .call(
@@ -56,7 +56,7 @@ const CurrencyLineChart: React.FC<CurrencyLineChartProps> = ({ rates }) => {
           })
         );
 
-    const yAxis = (g: any) =>
+    const yAxis = (g: d3.Selection<SVGGElement, unknown, null, undefined>) =>
       g.attr('transform', `translate(${margin.left},0)`).call(d3.axisLeft(y));
 
     svg.append('g').call(xAxis);
