@@ -57,6 +57,7 @@ export default function RootLayout({
       <head>
         <link rel="manifest" href="/manifest.json" />{/* Link the manifest file */}
         <meta name="theme-color" content="#ffffff" />{/* Optional: Set the theme color */}
+        <meta charSet="UTF-8" />
       </head>
       <body>
         <Providers>{children}</Providers>
