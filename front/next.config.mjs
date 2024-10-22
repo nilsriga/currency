@@ -1,17 +1,11 @@
-import nextPwa from 'next-pwa';
+/** @type {import('next').NextConfig} */
+import withPWAInit from "@ducanh2912/next-pwa";
 
-// Configure PWA settings
-const withPWA = nextPwa({
+const withPWA = withPWAInit({
   dest: "public",
-  // disable: process.env.NODE_ENV === "development",
-  register: true,
-  skipWaiting: true,
 });
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+export default withPWA({
   reactStrictMode: true,
   swcMinify: true,
-};
-
-export default withPWA(nextConfig);
+});
