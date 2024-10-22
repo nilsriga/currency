@@ -1,3 +1,4 @@
+// src/app/page.tsx
 'use client';
 
 import React, { useEffect } from 'react';
@@ -6,6 +7,7 @@ import { fetchRates, setSelectedCurrency, setPage } from '../redux/currencySlice
 import CurrencySelector from './components/currency/currencySelector';
 import CurrencyTable from './components/currency/currencyTable';
 import { RootState, AppDispatch } from '../redux/store';
+import CurrencyLineChart from './components/currency/currencyLineChart'; // Import the new chart component
 
 export default function Home() {
   const dispatch: AppDispatch = useDispatch();
@@ -47,6 +49,12 @@ export default function Home() {
         >
           Next
         </button>
+      </div>
+
+      {/* Render the CurrencyLineChart */}
+      <div className="mt-8">
+        <h2 className="text-xl font-bold text-center mb-4">Exchange Rate Over Time</h2>
+        <CurrencyLineChart rates={currentRates} />
       </div>
     </div>
   );
