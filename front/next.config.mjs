@@ -10,7 +10,7 @@ const withPWA = withPWAInit({
   customWorker: 'src/custom-sw.js',
   runtimeCaching: [
     {
-      urlPattern: /\.(?:png|jpg|jpeg|svg|ico)$/,
+      urlPattern: /\.(?:png|jpg|jpeg|svg|ico|js|css)$/,
       handler: 'CacheFirst',
       options: {
         cacheName: 'images',
@@ -20,13 +20,13 @@ const withPWA = withPWAInit({
         },
       },
     },
-    {
-      urlPattern: /\.(?:js|css)$/,
-      handler: 'StaleWhileRevalidate',
-      options: {
-        cacheName: 'static-resources',
-      },
-    },
+    // {
+    //   urlPattern: /\.(?:js|css)$/,
+    //   handler: 'StaleWhileRevalidate',
+    //   options: {
+    //     cacheName: 'static-resources',
+    //   },
+    // },
   ],
 });
 
