@@ -12,9 +12,9 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: 'portrait',
     icons: [
       {
-        src: '/icon-eur.svg',
-        sizes: 'any',
-        type: 'svg/xml',
+        src: '/euro-icon.svg',
+        sizes: '48x48 72x72 96x96 128x128 256x256 512x512',
+        type: 'image/svg+xml',
       },
     ],
   }

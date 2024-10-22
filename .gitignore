@@ -1,2 +1,4 @@
 /test
+front/public/sw*
+front/public/swe-worker*
 # .env

@@ -26,7 +26,8 @@ const initialState: CurrencyState = {
 export const fetchRates = createAsyncThunk(
   'currency/fetchRates',
   async ({ currency, page }: { currency: string; page: number }) => {
-    const response = await axios.get(`http://${process.env.API_URL}/currency/${currency}?page=${page}&limit=10`);
+    const response = await axios.get(`http://localhost:3000/currency/${currency}?page=${page}&limit=10`);
+    // const response = await axios.get(`http://${process.env.API_URL}/currency/${currency}?page=${page}&limit=10`);
     return { data: response.data.data as Rate[], currency, page, totalPages: response.data.totalPages };
   }
 );
