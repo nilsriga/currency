@@ -16,4 +16,5 @@
 # Exclude files in front/public that start with 'workbox'
 /front/public/workbox*
 
-.env
+/front/.env
+/back/.env
