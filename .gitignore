@@ -1,2 +1,19 @@
-/test
-# .env
+# Exclude build directory in back
+/back/build
+
+# Exclude node_modules in back
+/back/node_modules
+
+# Exclude .next directory in front
+/front/.next
+
+# Exclude node_modules in front
+/front/node_modules
+
+# Exclude files in front/public that start with 'sw'
+/front/public/sw*
+
+# Exclude files in front/public that start with 'workbox'
+/front/public/workbox*
+
+.env
