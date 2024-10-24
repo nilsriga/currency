@@ -15,8 +15,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it(`It should return : "Available endpoints: \n - GET '/currency'"`, () => {
-      expect(appController.getRoutes()).toBe(`Available endpoints: \n - GET '/currency'`);
+    it(`It should return : "Available endpoints: \n - GET 'currency/usd?page=1&limit=10'"`, () => {
+      expect(appController.getRoutes()).toBe(`Available endpoints: \n - GET 'currency/usd?page=1&limit=10'`);
     });
   });
 });

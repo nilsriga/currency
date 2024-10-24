@@ -9,8 +9,9 @@ on:
       - master
 
 jobs:
+
   backend-tests:
-    runs-on: ubuntu-24.01
+    runs-on: self-hosted
     name: Run Backend Tests
     steps:
       - name: Checkout code
@@ -32,7 +33,7 @@ jobs:
           npm test
 
   frontend-tests:
-    runs-on: ubuntu-24.01
+    runs-on: self-hosted
     name: Run Frontend Tests
     steps:
       - name: Checkout code
@@ -68,14 +69,14 @@ jobs:
 
       - name: Deploy Backend
         run: |
-          ssh user@your-server "cd /path/to/back && git pull && npm install && npm run build && pm2 restart backend"
+          ssh root@134.209.252.76 "cd /var/www/currency/back && git pull && npm install && npm run build && pm2 restart back"
 
       - name: Deploy Frontend
         run: |
-          ssh user@your-server "cd /path/to/front && git pull && npm install && npm run build && pm2 restart frontend"
+          ssh root@134.209.252.76 "cd /var/www/currency/front && git pull && npm install && npm run build && pm2 restart front"
 
       - name: Rollback on Failure
         if: failure()
         run: |
-          ssh user@your-server "cd /path/to/back && git reset --hard HEAD~1 && pm2 restart backend"
-          ssh user@your-server "cd /path/to/front && git reset --hard HEAD~1 && pm2 restart frontend"
+          ssh root@134.209.252.76 "cd /var/www/currency/back && git reset --hard HEAD~1 && pm2 restart back"
+          ssh root@134.209.252.76 "cd /var/www/currency/front && git reset --hard HEAD~1 && pm2 restart front"

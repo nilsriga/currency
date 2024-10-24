@@ -18,3 +18,5 @@
 
 /front/.env
 /back/.env
+
+/administrative/actions-runner/*

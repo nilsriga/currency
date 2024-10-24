@@ -19,6 +19,6 @@ describe('AppController (e2e)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect(`Available endpoints: \n - GET '/currency'`);
+      .expect(`Available endpoints: \n - GET 'currency/usd?page=1&limit=10'`);
   });
 });
