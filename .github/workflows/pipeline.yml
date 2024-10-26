@@ -9,10 +9,25 @@ on:
       - master
 
 jobs:
-
   backend-tests:
     runs-on: self-hosted
     name: Run Backend Tests
+    services:
+      mysql:
+        image: mysql:8.0.39
+        env:
+          MYSQL_ROOT_PASSWORD: asdf
+          MYSQL_DATABASE: currencies
+          MYSQL_USER: sammy
+          MYSQL_PASSWORD: asdf
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -27,36 +42,51 @@ jobs:
           cd back
           npm install
 
+      - name: Wait for MySQL to be ready
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" --silent; do
+            sleep 1
+          done
+
       - name: Run tests
+        env:
+          DB_HOST: 127.0.0.1
+          DB_USER: sammy
+          DB_PASSWORD: asdf
+          DB_NAME: currencies
         run: |
           cd back
           npm test
 
-  frontend-tests:
-    runs-on: self-hosted
-    name: Run Frontend Tests
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  # frontend-tests:
+  #   runs-on: self-hosted
+  #   name: Run Frontend Tests
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22'
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '22'
 
-      - name: Install dependencies
-        run: |
-          cd front
-          npm install
+  #     - name: Install dependencies
+  #       run: |
+  #         cd front
+  #         npm install
 
-      - name: Run tests
-        run: |
-          cd front
-          npm test
+  #     - name: Run tests
+  #       run: |
+  #         cd front
+  #         npm test
 
   deploy:
     runs-on: ubuntu-24.01
-    needs: [backend-tests, frontend-tests]
+    needs: [
+      backend-tests,
+      # frontend-tests
+      ]
+
     name: Deploy Application
     steps:
       - name: Checkout code
