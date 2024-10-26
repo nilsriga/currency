@@ -16,7 +16,7 @@ import { CurrencyRate } from './db/entities/CurrencyRate.entity'; // Import the 
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
+        type: 'mysql' as 'mysql',
         host: configService.get<string>('DATABASE_HOST'),
         port: configService.get<number>('DATABASE_PORT'),
         username: configService.get<string>('DATABASE_USERNAME'),
@@ -24,7 +24,7 @@ import { CurrencyRate } from './db/entities/CurrencyRate.entity'; // Import the 
         database: configService.get<string>('DATABASE_NAME'),
         entities: [CurrencyRate], // Use the entity directly here
         synchronize: true,
-        logging: true
+        logging: false
       }),
       inject: [ConfigService],
     }),
