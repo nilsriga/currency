@@ -73,27 +73,30 @@ jobs:
       backend-tests,
       # frontend-tests
       ]
-
     name: Deploy Application
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
+        uses: appleboy/ssh-action@v0.1.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Deploy Backend
-        run: |
-          ssh root@134.209.252.76 "cd /var/www/currency/back && git pull && npm install && npm run build && pm2 restart back"
-
-      - name: Deploy Frontend
-        run: |
-          ssh root@134.209.252.76 "cd /var/www/currency/front && git pull && npm install && npm run build && pm2 restart front"
-
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/currency/back
+            git pull
+            npm install
+            npm run build
+            pm2 restart back
+            cd /var/www/currency/front
+            git pull
+            npm install
+            npm run build
+            pm2 restart front
       - name: Rollback on Failure
         if: failure()
         run: |
           ssh root@134.209.252.76 "cd /var/www/currency/back && git reset --hard HEAD~1 && pm2 restart back"
           ssh root@134.209.252.76 "cd /var/www/currency/front && git reset --hard HEAD~1 && pm2 restart front"
+
