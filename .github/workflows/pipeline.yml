@@ -34,11 +34,11 @@ jobs:
 
       - name: Run tests
         env:
-          DB_HOST: localhost          # Points to your server's MySQL instance
-          DB_PORT: 3306               # MySQL's default port
-          DB_USER: sammy       # Replace with the actual MySQL username
-          DB_PASSWORD: asdf  # Replace with the actual MySQL password
-          DB_NAME: currencies       # Replace with the name of the database for testing
+          DATABASE_HOST: localhost          # Points to your server's MySQL instance
+          DATABASE_PORT: 3306               # MySQL's default port
+          DATABASE_USERNAME: sammy       # Replace with the actual MySQL username
+          DATABASE_PASSWORD: asdf  # Replace with the actual MySQL password
+          DATABASE_NAME: currencies       # Replace with the name of the database for testing
         run: |
           cd back
           npm install mysql --save
