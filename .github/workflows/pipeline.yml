@@ -34,11 +34,11 @@ jobs:
 
       - name: Run tests
         env:
-          DATABASE_HOST: localhost          # Points to your server's MySQL instance
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}          # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
           DATABASE_PORT: 3306               # MySQL's default port
-          DATABASE_USERNAME: sammy       # Replace with the actual MySQL username
-          DATABASE_PASSWORD: asdf  # Replace with the actual MySQL password
-          DATABASE_NAME: currencies       # Replace with the name of the database for testing
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}  # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
         run: |
           cd back
           npm install mysql --save
