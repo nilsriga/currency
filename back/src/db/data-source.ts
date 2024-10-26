@@ -1,18 +1,10 @@
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-// import * as dotenv from 'dotenv';
-
-// dotenv.config({ path: '.env' }); // Ensure the correct path to your .env file
 
 const configService = new ConfigService();
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
-  // host: configService.get<string>('DATABASE_HOST', 'localhost'), // Default to 'localhost' if not set
-  // port: configService.get<number>('DATABASE_PORT', 3306), // Default to 3306 if not set
-  // username: configService.get<string>('DATABASE_USERNAME', 'sammy'), // Default username
-  // password: configService.get<string>('DATABASE_PASSWORD', 'asdf'), // Default to an empty password
-  // database: configService.get<string>('DATABASE_NAME', 'currencies'), // Default database name
   host: configService.get<string>('DATABASE_HOST', 'localhost'), // Default to 'localhost' if not set
   port: configService.get<number>('DATABASE_PORT', 3306), // Default to 3306 if not set
   username: configService.get<string>('DATABASE_USERNAME', 'sammy'), // Default username

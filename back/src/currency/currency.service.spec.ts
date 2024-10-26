@@ -7,9 +7,6 @@ import { CurrencyRate } from '../db/entities/CurrencyRate.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { of } from 'rxjs';
-import * as dotenv from 'dotenv';
-
-dotenv.config({ path: '.env' }); // Ensure the correct path to your .env file
 
 
 describe('CurrencyService', () => {
@@ -34,16 +31,6 @@ describe('CurrencyService', () => {
     service = module.get<CurrencyService>(CurrencyService);
     httpService = module.get<HttpService>(HttpService);
     currencyRateRepository = module.get<Repository<CurrencyRate>>(getRepositoryToken(CurrencyRate));
-
-    console.log(process.env.API_KEY)
-    console.log(process.env.PORT)
-    console.log(process.env.API_URL)
-    console.log(process.env.FRONT_URL)
-    console.log(process.env.DATABASE_HOST)
-    console.log(process.env.DATABASE_PORT)
-    console.log(process.env.DATABASE_USERNAME)
-    console.log(process.env.DATABASE_PASSWORD)
-    console.log(process.env.DATABASE_NAME)
 
   });
 
