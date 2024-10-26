@@ -25,18 +25,18 @@ jobs:
       - name: Install dependencies
         run: |
           cd back
-      #     npm install
-      #     npm install mysql --save
+          npm install
+          npm install mysql --save
 
-      # - name: Run tests
-      #   env:
-      #     DATABASE_HOST: ${{ secrets.DATABASE_HOST }}          # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-      #     DATABASE_PORT: 3306               # MySQL's default port
-      #     DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-      #     DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}  # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-      #     DATABASE_NAME: ${{ secrets.DATABASE_NAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-      #   run: |
-      #     cd back
+      - name: Run tests
+        env:
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}          # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+          DATABASE_PORT: 3306               # MySQL's default port
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}  # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+        run: |
+          cd back
       #     npm run test
 
 
