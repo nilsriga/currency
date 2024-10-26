@@ -30,15 +30,5 @@ module.exports = {
         watch: false,
       },
     ],
-    deploy: {
-      production: {
-        user: 'node',
-        host: '134.209.252.76',
-        ref: 'origin/master',
-        repo: 'git@github.com:repo.git',
-        path: '/var/www/currency/administrative',
-        'post-deploy': 'pm2 link 3rpqhbfaw3s7g95 pdf8z9ta5aehqxq && pm2 reload ecosystem.config.js --env production',
-      },
-    },
   };
   
