@@ -73,30 +73,28 @@ jobs:
       backend-tests,
       # frontend-tests
       ]
+
     name: Deploy Application
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Set up SSH
-        uses: appleboy/ssh-action@v0.1.0
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          host: ${{ secrets.SSH_HOST }} # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-          username: ${{ secrets.SSH_USERNAME }} # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-          key: ${{ secrets.SSH_PRIVATE_KEY }} # Add only the key string without "-----BEGIN OPENSSH PRIVATE KEY-----" and "-----END OPENSSH PRIVATE KEY-----"
-          script: |
-            cd /var/www/currency/back
-            git pull
-            npm install
-            npm run build
-            pm2 restart back
-            cd /var/www/currency/front
-            git pull
-            npm install
-            npm run build
-            pm2 restart front
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # Add only the key string without "-----END OPENSSH PRIVATE KEY-----" and "-----BEGIN OPENSSH PRIVATE KEY-----"
+
+      - name: Deploy Backend
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /var/www/currency/back && git pull && npm install && npm run build && pm2 restart back"
+
+      - name: Deploy Frontend
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /var/www/currency/front && git pull && npm install && npm run build && pm2 restart front"
+
       - name: Rollback on Failure
         if: failure()
         run: |
-          ssh root@134.209.252.76 "cd /var/www/currency/back && git reset --hard HEAD~1 && pm2 restart back"
-          ssh root@134.209.252.76 "cd /var/www/currency/front && git reset --hard HEAD~1 && pm2 restart front"
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /var/www/currency/back && git reset --hard HEAD~1 && pm2 restart back"
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /var/www/currency/front && git reset --hard HEAD~1 && pm2 restart front"
 
