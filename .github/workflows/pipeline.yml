@@ -22,15 +22,15 @@ jobs:
         with:
           node-version: '22'
 
-      # - name: Install dependencies
-      #   run: |
-      #     cd back
-      #     npm install
-
-      - name: Check MySQL Connection
+      - name: Install dependencies
         run: |
-          mysql -usammy -pasdf
-          exit
+          cd back
+          npm install
+
+      # - name: Check MySQL Connection
+      #   run: |
+      #     mysql -usammy -pasdf
+      #     exit
 
       # - name: Run tests
       #   env:
@@ -66,33 +66,33 @@ jobs:
   #         cd front
   #         npm test
 
-  deploy:
-    runs-on: ubuntu-24.01
-    needs: [
-      backend-tests,
-      # frontend-tests
-      ]
+  # deploy:
+  #   runs-on: ubuntu-24.01
+  #   needs: [
+  #     backend-tests,
+  #     # frontend-tests
+  #     ]
 
-    name: Deploy Application
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # name: Deploy Application
+    # steps:
+    #   - name: Checkout code
+    #     uses: actions/checkout@v2
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #   - name: Set up SSH
+    #     uses: webfactory/ssh-agent@v0.5.3
+    #     with:
+    #       ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Deploy Backend
-        run: |
-          ssh root@134.209.252.76 "cd /var/www/currency/back && git pull && npm install && npm run build && pm2 restart back"
+    #   - name: Deploy Backend
+    #     run: |
+    #       ssh root@134.209.252.76 "cd /var/www/currency/back && git pull && npm install && npm run build && pm2 restart back"
 
-      - name: Deploy Frontend
-        run: |
-          ssh root@134.209.252.76 "cd /var/www/currency/front && git pull && npm install && npm run build && pm2 restart front"
+    #   - name: Deploy Frontend
+    #     run: |
+    #       ssh root@134.209.252.76 "cd /var/www/currency/front && git pull && npm install && npm run build && pm2 restart front"
 
-      - name: Rollback on Failure
-        if: failure()
-        run: |
-          ssh root@134.209.252.76 "cd /var/www/currency/back && git reset --hard HEAD~1 && pm2 restart back"
-          ssh root@134.209.252.76 "cd /var/www/currency/front && git reset --hard HEAD~1 && pm2 restart front"
+    #   - name: Rollback on Failure
+    #     if: failure()
+    #     run: |
+    #       ssh root@134.209.252.76 "cd /var/www/currency/back && git reset --hard HEAD~1 && pm2 restart back"
+    #       ssh root@134.209.252.76 "cd /var/www/currency/front && git reset --hard HEAD~1 && pm2 restart front"
