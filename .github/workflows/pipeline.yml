@@ -41,6 +41,7 @@ jobs:
           DB_NAME: currencies       # Replace with the name of the database for testing
         run: |
           cd back
+          npm install mysql --save
           npm run test
 
 
