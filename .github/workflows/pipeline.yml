@@ -12,9 +12,15 @@ jobs:
   backend-tests:
     runs-on: self-hosted
     name: Run Backend Tests
+
     services:
       mysql:
-        image: mysql:8.0.39  # or whichever MySQL version you need
+        image: mysql:8.0.39   # MySQL Docker image
+        env:
+          MYSQL_ROOT_PASSWORD: root_password
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_password
         ports:
           - 3306:3306
         options: >-
@@ -22,11 +28,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-        env:
-          MYSQL_ROOT_PASSWORD: rootpassword
-          MYSQL_DATABASE: test_db
-          MYSQL_USER: testuser
-          MYSQL_PASSWORD: testpassword
 
     steps:
       - name: Checkout code
@@ -37,23 +38,25 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Wait for MySQL to be ready
+        run: |
+          until mysqladmin ping -h"127.0.0.1" --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 2
+          done
+
       - name: Install dependencies
         run: |
           cd back
           npm install
 
-      - name: Wait for MySQL to be ready
-        run: |
-          dockerize -wait tcp://mysql:3306 -timeout 1m
-        shell: bash
-
       - name: Run tests
         env:
-          DATABASE_HOST: mysql  # Reference the MySQL service by name
-          DATABASE_PORT: 3306
-          DATABASE_USER: testuser
-          DATABASE_PASSWORD: testpassword
-          DATABASE_NAME: test_db
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_USER: test_user
+          DB_PASSWORD: test_password
+          DB_NAME: test_db
         run: |
           cd back
           npm test
