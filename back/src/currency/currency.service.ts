@@ -23,7 +23,7 @@ export class CurrencyService {
 
     async fetchAndStoreRates() {
         try {
-            const apiKey = this.configService.get<string>('API_KEY');
+            const apiKey = this.configService.get<string>('ANYAPI_KEY');
             const response = await firstValueFrom(
                 this.httpService.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${apiKey}`)
             );
