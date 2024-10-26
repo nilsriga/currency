@@ -25,8 +25,8 @@ jobs:
       - name: Install dependencies
         run: |
           cd back
-          npm install
-          npm install mysql --save
+        # npm install
+        # npm install mysql --save
 
       - name: Run tests
         env:

@@ -6,8 +6,8 @@
 module.exports = {
   apps: [
     {
-      name: 'actions-runner',
-      script: '/var/www/currency/administrative/actions-runner/run.sh',
+      name: 'actions',
+      script: '/var/www/currency/admin/actions-runner/run.sh',
       interpreter: 'bash',
       watch: false,
     },
