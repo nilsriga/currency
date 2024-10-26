@@ -22,45 +22,44 @@ jobs:
         with:
           node-version: '22'
 
-      # - name: Install dependencies
-      #   run: |
-      #     cd back
-      #     npm install
+      - name: Install dependencies
+        run: |
+          cd back
+          npm install
 
-  #     - name: Run tests
-  #       env:
-  #         DATABASE_HOST: ${{ secrets.DATABASE_HOST }}          # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-  #         DATABASE_PORT: 3306               # MySQL's default port
-  #         DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-  #         DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}  # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-  #         DATABASE_NAME: ${{ secrets.DATABASE_NAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-  #       run: |
-  #         cd back
-  #         npm install mysql --save
-  #         npm run test
+      - name: Run tests
+        env:
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}          # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+          DATABASE_PORT: 3306               # MySQL's default port
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}  # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+        run: |
+          cd back
+          npm run test
 
 
-  # frontend-tests:
-  #   runs-on: self-hosted
-  #   name: Run Frontend Tests
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+  frontend-tests:
+    runs-on: self-hosted
+    name: Run Frontend Tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '22'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '22'
 
-  #     - name: Install dependencies
-  #       run: |
-  #         cd front
-  #         npm install
+      - name: Install dependencies
+        run: |
+          cd front
+          npm install
 
-  #     - name: Run tests
-  #       run: |
-  #         cd front
-  #         npm test
+      - name: Run tests
+        run: |
+          cd front
+          npm test
 
   deploy:
     runs-on: self-hosted
