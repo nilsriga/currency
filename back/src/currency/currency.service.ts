@@ -16,7 +16,7 @@ export class CurrencyService {
         private readonly currencyRateRepository: Repository<CurrencyRate>
     ) { }
 
-    @Cron('0 0 * * *')
+    @Cron('1 3,16 * * *')
     async handleCron() {
         await this.fetchAndStoreRates();
     }

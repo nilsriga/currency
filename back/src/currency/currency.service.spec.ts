@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CurrencyService } from './currency.service';
-import { HttpService } from '@nestjs/axios';
+import { HttpModule, HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { Repository } from 'typeorm';
 import { CurrencyRate } from '../db/entities/CurrencyRate.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { AxiosResponse } from 'axios';
+import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { of } from 'rxjs';
 
 describe('CurrencyService', () => {
@@ -15,13 +15,13 @@ describe('CurrencyService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [HttpModule],
       providers: [
         CurrencyService,
-        HttpService,
         ConfigService,
         {
           provide: getRepositoryToken(CurrencyRate),
-          useClass: Repository, // Mock repository
+          useClass: Repository,
         },
       ],
     }).compile();
@@ -40,15 +40,20 @@ describe('CurrencyService', () => {
         },
         status: 200,
         statusText: 'OK',
-        headers: {}, // Add this line
-        config: {
-          headers: headers, // Add this line
-        },
+        headers: {},  
+        config: {} as InternalAxiosRequestConfig,
+      };
+
+      const mockCurrencyRate: CurrencyRate = {
+        id: 1,
+        date: new Date(),
+        currency: 'USD',
+        rate: 1.23,
       };
 
       jest.spyOn(httpService, 'get').mockReturnValue(of(mockApiResponse));
       jest.spyOn(currencyRateRepository, 'findOne').mockResolvedValue(null);
-      jest.spyOn(currencyRateRepository, 'save').mockImplementation(async (rate) => rate);
+      jest.spyOn(currencyRateRepository, 'save').mockImplementation(async () => mockCurrencyRate);
 
       await service.fetchAndStoreRates();
 
@@ -72,7 +77,7 @@ describe('CurrencyService', () => {
 
   describe('getRatesByCurrency', () => {
     it('should return paginated currency rates', async () => {
-      const mockRates = [
+      const mockRates: CurrencyRate[] = [
         { id: 1, currency: 'USD', rate: 1.23, date: new Date() },
         { id: 2, currency: 'USD', rate: 1.25, date: new Date() },
       ];
