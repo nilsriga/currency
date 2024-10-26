@@ -32,16 +32,16 @@ jobs:
       #     mysql -usammy -pasdf
       #     exit
 
-      # - name: Run tests
-      #   env:
-      #     DB_HOST: localhost          # Points to your server's MySQL instance
-      #     DB_PORT: 3306               # MySQL's default port
-      #     DB_USER: sammy       # Replace with the actual MySQL username
-      #     DB_PASSWORD: asdf  # Replace with the actual MySQL password
-      #     DB_NAME: currencies       # Replace with the name of the database for testing
-      #   run: |
-      #     cd back
-      #     npm test
+      - name: Run tests
+        env:
+          DB_HOST: localhost          # Points to your server's MySQL instance
+          DB_PORT: 3306               # MySQL's default port
+          DB_USER: sammy       # Replace with the actual MySQL username
+          DB_PASSWORD: asdf  # Replace with the actual MySQL password
+          DB_NAME: currencies       # Replace with the name of the database for testing
+        run: |
+          cd back
+          npm test
 
 
   # frontend-tests:
