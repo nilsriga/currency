@@ -13,12 +13,14 @@ module.exports = {
         watch: false,
       },
       {
-        name: 'backend',
-        script: '/var/www/currency/back/build/main.js',
+        name: 'back',
+        script: 'npm',
+        args: 'run start',
+        cwd: '/var/www/currency/front',
         watch: false,
       },
       {
-        name: 'frontend',
+        name: 'front',
         script: 'npm',
         args: 'run start',
         cwd: '/var/www/currency/front',
