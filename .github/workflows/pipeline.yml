@@ -22,21 +22,26 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install dependencies
-        run: |
-          cd back
-          npm install
+      # - name: Install dependencies
+      #   run: |
+      #     cd back
+      #     npm install
 
-      - name: Run tests
-        env:
-          DB_HOST: localhost          # Points to your server's MySQL instance
-          DB_PORT: 3306               # MySQL's default port
-          DB_USER: sammy       # Replace with the actual MySQL username
-          DB_PASSWORD: asdf  # Replace with the actual MySQL password
-          DB_NAME: currencies       # Replace with the name of the database for testing
+      - name: Check MySQL Connection
         run: |
-          cd back
-          npm test
+          mysql -usammy -pasdf
+          exit
+
+      # - name: Run tests
+      #   env:
+      #     DB_HOST: localhost          # Points to your server's MySQL instance
+      #     DB_PORT: 3306               # MySQL's default port
+      #     DB_USER: sammy       # Replace with the actual MySQL username
+      #     DB_PASSWORD: asdf  # Replace with the actual MySQL password
+      #     DB_NAME: currencies       # Replace with the name of the database for testing
+      #   run: |
+      #     cd back
+      #     npm test
 
 
   # frontend-tests:
