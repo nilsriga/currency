@@ -16,7 +16,7 @@ module.exports = {
         name: 'back',
         script: 'npm',
         args: 'run start:prod',
-        cwd: '/var/www/currency/front',
+        cwd: '/var/www/currency/back',
         watch: false,
       },
       {
