@@ -68,7 +68,7 @@ jobs:
   #         npm test
 
   deploy:
-    runs-on: ubuntu-24.01
+    runs-on: self-hosted
     needs: [
       backend-tests,
       # frontend-tests
