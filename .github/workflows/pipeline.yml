@@ -80,9 +80,9 @@ jobs:
       - name: Set up SSH
         uses: appleboy/ssh-action@v0.1.0
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_HOST }} # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+          username: ${{ secrets.SSH_USERNAME }} # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # Add only the key string without "-----BEGIN OPENSSH PRIVATE KEY-----" and "-----END OPENSSH PRIVATE KEY-----"
           script: |
             cd /var/www/currency/back
             git pull
