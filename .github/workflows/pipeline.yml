@@ -13,23 +13,26 @@ jobs:
     runs-on: self-hosted
     name: Run Backend Tests
 
-    services:
-      mysql:
-        image: mysql:8.0.39   # MySQL Docker image
-        env:
-          MYSQL_ROOT_PASSWORD: root_password
-          MYSQL_DATABASE: test_db
-          MYSQL_USER: test_user
-          MYSQL_PASSWORD: test_password
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
     steps:
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          sudo systemctl start docker
+          sudo systemctl enable docker
+
+      - name: Start MySQL Service in Docker
+        run: |
+          docker run --name mysql -e MYSQL_ROOT_PASSWORD=root_password \
+            -e MYSQL_DATABASE=test_db \
+            -e MYSQL_USER=test_user \
+            -e MYSQL_PASSWORD=test_password \
+            -p 3306:3306 -d mysql:8.0
+          until docker exec mysql mysqladmin ping -uroot -proot_password --silent; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 2
+          done
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -37,13 +40,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '22'
-
-      - name: Wait for MySQL to be ready
-        run: |
-          until mysqladmin ping -h"127.0.0.1" --silent; do
-            echo "Waiting for MySQL to be ready..."
-            sleep 2
-          done
 
       - name: Install dependencies
         run: |
@@ -60,7 +56,6 @@ jobs:
         run: |
           cd back
           npm test
-
 
   # frontend-tests:
   #   runs-on: self-hosted
