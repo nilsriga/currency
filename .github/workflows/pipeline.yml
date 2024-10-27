@@ -1,97 +1,90 @@
+# Name of the GitHub Actions workflow
 name: CI/CD Pipeline
 
-on:
-  push:
-    branches:
+# Define the events that trigger the workflow
+on:  
+  push:    # Trigger the workflow on push events to the master branch
+    branches:      
+      - master  
+  pull_request:    # Trigger the workflow on pull request events to the master branch
+    branches:      
       - master
-  pull_request:
-    branches:
-      - master
 
-jobs:
-  backend-tests:
-    runs-on: self-hosted
-    name: Run Backend Tests
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '22'
-
-      - name: Install dependencies
-        run: |
-          cd back
-          npm install
-
-      - name: Run tests
-        env:
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}          # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+# Define the jobs to be run
+jobs:  
+  # Job to run backend tests
+  backend-tests:    
+    runs-on: self-hosted    # Specify the runner to use
+    name: Run Backend Tests    # Name of the job
+    steps:      
+      - name: Checkout code        # Step to checkout the code from the repository
+        uses: actions/checkout@v2      
+      - name: Set up Node.js        # Step to set up Node.js environment
+        uses: actions/setup-node@v2        
+        with:          
+          node-version: '22'      # Specify the Node.js version to use
+      - name: Install dependencies        # Step to install backend dependencies
+        run: |          
+          cd back          
+          npm install      
+      - name: Run tests        # Step to run backend tests
+        env:          
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}          # Database host (add this variable in your GitHub repository > Settings > Variables and Secrets > Add Secret)
           DATABASE_PORT: 3306               # MySQL's default port
-          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}  # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-          ANYAPI_KEY: ${{ secrets.ANYAPI_KEY }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
-        run: |
-          cd back
-          npm run test
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}       # Database username (add this variable in your GitHub repository > Settings > Variables and Secrets > Add Secret)
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}  # Database password (add this variable in your GitHub repository > Settings > Variables and Secrets > Add Secret)
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}       # Database name (add this variable in your GitHub repository > Settings > Variables and Secrets > Add Secret)
+          ANYAPI_KEY: ${{ secrets.ANYAPI_KEY }}       # API key (add this variable in your GitHub repository > Settings > Variables and Secrets > Add Secret)
+        run: |          
+          cd back          
+          npm run test  
 
+  # Job to run frontend tests
+  frontend-tests:    
+    runs-on: self-hosted    # Specify the runner to use
+    name: Run Frontend Tests    # Name of the job
+    steps:      
+      - name: Checkout code        # Step to checkout the code from the repository
+        uses: actions/checkout@v2      
+      - name: Set up Node.js        # Step to set up Node.js environment
+        uses: actions/setup-node@v2        
+        with:          
+          node-version: '22'      # Specify the Node.js version to use
+      - name: Install dependencies        # Step to install frontend dependencies
+        run: |          
+          cd front          
+          npm install      
+      - name: Run tests        # Step to run frontend tests
+        run: |          
+          cd front          
+          npm test  
 
-  # frontend-tests:
-  #   runs-on: self-hosted
-  #   name: Run Frontend Tests
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
-
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '22'
-
-  #     - name: Install dependencies
-  #       run: |
-  #         cd front
-  #         npm install
-
-  #     - name: Run tests
-  #       run: |
-  #         cd front
-  #         npm test
-
-  deploy:
-    runs-on: self-hosted
-    needs: 
-      - backend-tests
-      # - frontend-tests
-    name: Deploy Application
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Add SSH Host Key
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Deploy Backend
-        run: |
-          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /var/www/currency/back && git pull && /usr/local/bin/npm install && /usr/local/bin/npm run build && /usr/local/bin/pm2 restart back"
-
-      - name: Deploy Frontend
-        run: |
-          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /var/www/currency/front && git pull && /usr/local/bin/npm install && /usr/local/bin/npm run build && /usr/local/bin/pm2 restart front"
-
-      - name: Rollback on Failure
-        if: failure()
-        run: |
-          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /var/www/currency/back && git reset --hard HEAD~1 && /usr/local/bin/pm2 restart back"
+  # Job to deploy the application
+  deploy:    
+    runs-on: self-hosted    # Specify the runner to use
+    needs:       # Define dependencies on other jobs
+      - backend-tests      
+      - frontend-tests    
+    name: Deploy Application    # Name of the job
+    steps:      
+      - name: Checkout code        # Step to checkout the code from the repository
+        uses: actions/checkout@v2      
+      - name: Add SSH Host Key        # Step to add SSH host key
+        run: |          
+          mkdir -p ~/.ssh          
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts      
+      - name: Set up SSH        # Step to set up SSH
+        uses: webfactory/ssh-agent@v0.5.3        
+        with:          
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}      
+      - name: Deploy Backend        # Step to deploy backend
+        run: |          
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /var/www/currency/back && git pull && /usr/local/bin/npm install && /usr/local/bin/npm run build && /usr/local/bin/pm2 restart back"      
+      - name: Deploy Frontend        # Step to deploy frontend
+        run: |          
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /var/www/currency/front && git pull && /usr/local/bin/npm install && /usr/local/bin/npm run build && /usr/local/bin/pm2 restart front"      
+      - name: Rollback on Failure        # Step to rollback on failure
+        if: failure()        
+        run: |          
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /var/www/currency/back && git reset --hard HEAD~1 && /usr/local/bin/pm2 restart back"          
           ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "cd /var/www/currency/front && git reset --hard HEAD~1 && /usr/local/bin/pm2 restart front"

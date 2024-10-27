@@ -1,22 +1,21 @@
 {
    "compilerOptions": {
-      "lib": [
-         "es5",
-         "es6"
-      ],
-
-      "target": "es5",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "outDir": "./build",
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "sourceMap": true,
-      "inlineSources": true,
-
-      // Set `sourceRoot` to  "/" to strip the build path prefix
-      // from generated source code references.
-      // This improves issue grouping in Sentry.
-      "sourceRoot": "/"
+     "lib": [
+       "es5", // Include ES5 library
+       "es6" // Include ES6 library
+     ],
+     "target": "es5", // Set the target JavaScript version to ES5
+     "module": "commonjs", // Use CommonJS module system
+     "moduleResolution": "node", // Use Node.js module resolution
+     "outDir": "./build", // Output directory for compiled files
+     "emitDecoratorMetadata": true, // Emit decorator metadata for reflection
+     "experimentalDecorators": true, // Enable experimental support for decorators
+     "sourceMap": true, // Generate source maps for debugging
+     "inlineSources": true, // Include the original source code in the source maps
+     // Set `sourceRoot` to  "/" to strip the build path prefix
+     // from generated source code references.
+     // This improves issue grouping in Sentry.
+     "sourceRoot": "/"
    }
-}
+ }
+ 

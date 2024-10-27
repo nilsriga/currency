@@ -1,4 +1,11 @@
 {
-  "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "build", "**/*.spec.ts", "**/*.test.ts" ]
+  "extends": "./tsconfig.json", // Extend the base TypeScript configuration from tsconfig.json
+  "exclude": [
+    "node_modules", // Exclude the node_modules directory
+    "test", // Exclude the test directory
+    "dist", // Exclude the dist directory
+    "build", // Exclude the build directory
+    "**/*.spec.ts", // Exclude all spec files (unit tests)
+    "**/*.test.ts" // Exclude all test files (integration tests)
+  ]
 }

@@ -1,86 +1,170 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Currency Exchange Rates API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This project is a NestJS application that provides an API for fetching and storing currency exchange rates. It uses TypeORM for database interactions, Jest for testing, and integrates with Sentry for error tracking.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Table of Contents
+1. [Setup and Run](#setup-and-run)
+2. [Project Structure](#project-structure)
+3. [NestJS Project Structure and Router](#nestjs-project-structure-and-router)
+4. [TypeORM and Jest](#typeorm-and-jest)
+5. [Code Functionality](#code-functionality)
+6. [File Descriptions](#file-descriptions)
 
-## Description
+## Setup and Run
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Prerequisites
+- Node.js (v22)
+- npm
+- MySQL (or any other database supported by TypeORM)
 
-## Project setup
+### Steps
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+Install dependencies:
 
-```bash
-$ npm install
-```
+bash
 
-## Compile and run the project
+Copy
+npm install
+Set up environment variables: Create a .env file in the root directory and add the following variables:
 
-```bash
-# development
-$ npm run start
+env
 
-# watch mode
-$ npm run start:dev
+Copy
+DATABASE_HOST=localhost
+DATABASE_PORT=3306
+DATABASE_USERNAME=root
+DATABASE_PASSWORD=yourpassword
+DATABASE_NAME=currencies
+ANYAPI_KEY=your_api_key
+SENTRY_KEY=your_sentry_key
+Run database migrations:
 
-# production mode
-$ npm run start:prod
-```
+bash
 
-## Run tests
+Copy
+npm run typeorm migration:run
+Start the application:
 
-```bash
-# unit tests
-$ npm run test
+bash
 
-# e2e tests
-$ npm run test:e2e
+Copy
+npm run start
+Run tests:
 
-# test coverage
-$ npm run test:cov
-```
+bash
 
-## Resources
+Copy
+npm run test
+Project Structure
+plaintext
 
-Check out a few resources that may come in handy when working with NestJS:
+Copy
+.
+|-- README.md
+|-- nest-cli.json
+|-- package-lock.json
+|-- package.json
+|-- src
+|   |-- app.controller.spec.ts
+|   |-- app.controller.ts
+|   |-- app.module.ts
+|   |-- app.service.ts
+|   |-- currency
+|   |   |-- currency.controller.spec.ts
+|   |   |-- currency.controller.ts
+|   |   |-- currency.module.ts
+|   |   |-- currency.service.spec.ts
+|   |   `-- currency.service.ts
+|   |-- db
+|   |   |-- data-source.ts
+|   |   |-- entities
+|   |   |   `-- CurrencyRate.entity.ts
+|   |   `-- migrations
+|   |       `-- 1729369938238-currency-rates.ts
+|   |-- instrument.ts
+|   `-- main.ts
+|-- test
+|   |-- app.e2e-spec.ts
+|   `-- currency.service.integration.spec.ts
+|-- tsconfig.build.json
+`-- tsconfig.json
+NestJS Project Structure and Router
+NestJS follows a modular architecture, which helps in organizing the code into cohesive blocks. Each module encapsulates related components like controllers, services, and entities.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Controllers handle incoming requests and return responses to the client.
 
-## Support
+Services contain the business logic and interact with the database.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Modules group related controllers and services together.
 
-## Stay in touch
+Router
+The router in NestJS is defined by the controllers. Each controller can have multiple routes that handle different HTTP methods (GET, POST, etc.).
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+TypeORM and Jest
+TypeORM
+TypeORM is an ORM (Object-Relational Mapper) that allows you to interact with your database using TypeScript classes and decorators. It supports various databases like MySQL, PostgreSQL, SQLite, etc.
 
-## License
+Jest
+Jest is a testing framework that allows you to write unit and integration tests for your application. It provides a simple API to mock dependencies and assert the behavior of your code.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Code Functionality
+The application fetches currency exchange rates from an external API and stores them in a database. It provides endpoints to retrieve the stored rates and integrates with Sentry for error tracking.
+
+File Descriptions
+Root Directory
+README.md: Contains the documentation for the project.
+
+nest-cli.json: Configuration file for the Nest CLI.
+
+package-lock.json: Automatically generated file that describes the exact tree that was generated by npm.
+
+package.json: Contains metadata about the project and its dependencies.
+
+src Directory
+app.controller.spec.ts: Unit tests for the AppController.
+
+app.controller.ts: Defines the main controller for the application.
+
+app.module.ts: The root module of the application.
+
+app.service.ts: Defines the main service for the application.
+
+currency Directory
+currency.controller.spec.ts: Unit tests for the CurrencyController.
+
+currency.controller.ts: Defines the controller for currency-related operations.
+
+currency.module.ts: Module for the currency feature.
+
+currency.service.spec.ts: Unit tests for the CurrencyService.
+
+currency.service.ts: Defines the service for currency-related operations.
+
+db Directory
+data-source.ts: Configuration for the TypeORM data source.
+
+entities Directory
+
+CurrencyRate.entity.ts: Defines the CurrencyRate entity for TypeORM.
+
+migrations Directory
+
+1729369938238-currency-rates.ts: Migration file for the CurrencyRate entity.
+
+Other Files
+instrument.ts: Contains instrumentation code, possibly for Sentry.
+
+main.ts: The entry point of the application.
+
+test Directory
+app.e2e-spec.ts: End-to-end tests for the application.
+
+currency.service.integration.spec.ts: Integration tests for the CurrencyService.
+
+Configuration Files
+tsconfig.build.json: TypeScript configuration file for the build process.
+
+tsconfig.json: TypeScript configuration file for the project.
