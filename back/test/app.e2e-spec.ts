@@ -1,55 +1,47 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { AppModule } from '../src/app.module';
+import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { CurrencyService } from '../src/currency/currency.service';
+import { CurrencyRate } from '../src/db/entities/CurrencyRate.entity';
+import { Repository } from 'typeorm';
+import { firstValueFrom } from 'rxjs';
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication;
+describe('CurrencyService Integration', () => {
+  let service: CurrencyService;
+  let httpService: HttpService;
+  let currencyRateRepository: Repository<CurrencyRate>;
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        CurrencyService,
+        HttpService,
+        ConfigService,
+        {
+          provide: getRepositoryToken(CurrencyRate),
+          useClass: Repository,
+        },
+      ],
     }).compile();
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
+    service = module.get<CurrencyService>(CurrencyService);
+    httpService = module.get<HttpService>(HttpService);
+    currencyRateRepository = module.get<Repository<CurrencyRate>>(getRepositoryToken(CurrencyRate));
   });
 
-  afterEach(async () => {
-    await app.close();
-  });
+  it('should fetch and store rates', async () => {
+    const apiKey = process.env.ANYAPI_KEY;
+    const response = await firstValueFrom(
+      httpService.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${apiKey}`)
+    );
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect(`Available endpoints: \n - GET 'currency/usd?page=1&limit=10'`);
-  });
-});
-
-describe('Main (e2e)', () => {
-  let app: INestApplication;
-
-  beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
-
-  afterAll(async () => {
-    await app.close();
-  });
-
-  it('should have CORS enabled', async () => {
-    const response = await request(app.getHttpServer()).options('/');
-    expect(response.headers['access-control-allow-origin']).toBe(process.env.URL);
-  });
-
-  it('should start and return a 200 response on GET /', async () => {
-    const response = await request(app.getHttpServer()).get('/');
     expect(response.status).toBe(200);
+    expect(response.data).toHaveProperty('rates');
+
+    await service.fetchAndStoreRates();
+
+    const savedRates = await currencyRateRepository.find();
+    expect(savedRates.length).toBeGreaterThan(0);
   });
 });
