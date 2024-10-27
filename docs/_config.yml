@@ -21,7 +21,7 @@
 title: "Currency Exchange Rates API Documentation"
 description: "Documentation for the Currency Exchange Rates API project."
 baseurl: "/currency/docs" # the subpath of your site, e.g. /blog
-url: "https://nilsriga.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://nilsriga.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
 github_username:  jekyll
 
