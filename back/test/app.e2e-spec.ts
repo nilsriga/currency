@@ -1,47 +1,39 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpService } from '@nestjs/axios';
-import { ConfigService } from '@nestjs/config';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { CurrencyService } from '../src/currency/currency.service';
-import { CurrencyRate } from '../src/db/entities/CurrencyRate.entity';
-import { Repository } from 'typeorm';
-import { firstValueFrom } from 'rxjs';
+import { INestApplication } from '@nestjs/common';
+import * as request from 'supertest';
+import { AppModule } from '../src/app.module';
+import { HttpModule } from '@nestjs/axios';
 
-describe('CurrencyService Integration', () => {
-  let service: CurrencyService;
-  let httpService: HttpService;
-  let currencyRateRepository: Repository<CurrencyRate>;
+describe('AppController (e2e)', () => {
+  let app: INestApplication;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        CurrencyService,
-        HttpService,
-        ConfigService,
-        {
-          provide: getRepositoryToken(CurrencyRate),
-          useClass: Repository,
-        },
-      ],
+  beforeAll(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule, HttpModule],
     }).compile();
 
-    service = module.get<CurrencyService>(CurrencyService);
-    httpService = module.get<HttpService>(HttpService);
-    currencyRateRepository = module.get<Repository<CurrencyRate>>(getRepositoryToken(CurrencyRate));
+    app = moduleFixture.createNestApplication();
+    await app.init();
   });
 
-  it('should fetch and store rates', async () => {
-    const apiKey = process.env.ANYAPI_KEY;
-    const response = await firstValueFrom(
-      httpService.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${apiKey}`)
-    );
+  it('/ (GET)', () => {
+    console.log(1)
+    return request(app.getHttpServer())
+      .get('/')
+      .expect(200)
+      .expect("Available endpoints: \n - GET 'currency/usd?page=1&limit=10'");
+  });
 
-    expect(response.status).toBe(200);
-    expect(response.data).toHaveProperty('rates');
+  it('/currency/usd?page=1&limit=1 (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/currency/usd?page=1&limit=1')
+      .expect(200)
+      .expect((res) => {
+        expect(res.body).toHaveProperty('data');
+      });
+  });
 
-    await service.fetchAndStoreRates();
-
-    const savedRates = await currencyRateRepository.find();
-    expect(savedRates.length).toBeGreaterThan(0);
+  afterAll(async () => {
+    await app.close();
   });
 });

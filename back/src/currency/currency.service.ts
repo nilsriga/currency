@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -21,33 +21,35 @@ export class CurrencyService {
         await this.fetchAndStoreRates();
     }
 
-    async fetchAndStoreRates() {
+    async fetchAndStoreRates(): Promise<string> {
         try {
             const apiKey = this.configService.get<string>('ANYAPI_KEY');
-            const response = await firstValueFrom(
+            const response = await lastValueFrom(
                 this.httpService.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${apiKey}`)
             );
             const data = response.data;
             const date = new Date(data.lastUpdate * 1000); // Convert timestamp to Date
 
-            // Iterate over the rates and save them individually if they don't exist
+            let saved = false;
             for (const [currency, rate] of Object.entries(data.rates)) {
-                // Check if the currency rate for the given date and currency already exists
+                
                 const existingRate = await this.currencyRateRepository.findOne({
                     where: { date, currency }
                 });
 
-                // If the rate doesn't exist, create a new record
                 if (!existingRate) {
                     const currencyRate = new CurrencyRate();
                     currencyRate.date = date;
                     currencyRate.currency = currency;
                     currencyRate.rate = rate as number;
                     await this.currencyRateRepository.save(currencyRate);
+                    saved = true;
                 }
             }
+            return saved ? "Successful API call and successful saving of rates" : "Successful API call, Nothing to save";
         } catch (error) {
             console.error('Error fetching currency rates:', error);
+            throw error;
         }
     }
 
@@ -66,4 +68,3 @@ export class CurrencyService {
         };
     }
 }
-

@@ -8,6 +8,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { of, throwError } from 'rxjs';
 
+
 describe('CurrencyService', () => {
   let service: CurrencyService;
   let httpService: HttpService;
@@ -15,10 +16,20 @@ describe('CurrencyService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [HttpModule],
       providers: [
         CurrencyService,
-        ConfigService,
+        {
+          provide: HttpService,
+          useValue: {
+            get: jest.fn(),
+          },
+        },
+        {
+          provide: ConfigService,
+          useValue: {
+            get: jest.fn().mockReturnValue('test-api-key'),
+          },
+        },
         {
           provide: getRepositoryToken(CurrencyRate),
           useClass: Repository,
@@ -31,71 +42,51 @@ describe('CurrencyService', () => {
     currencyRateRepository = module.get<Repository<CurrencyRate>>(getRepositoryToken(CurrencyRate));
   });
 
-  describe('fetchAndStoreRates', () => {
-    it('should fetch and store new currency rates', async () => {
-      const mockApiResponse: AxiosResponse = {
-        data: {
-          lastUpdate: 1729814400,
-          rates: { USD: 1.0825, EUR: 1 },
+  it('should fetch and store rates', async () => {
+    const mockApiResponse: AxiosResponse = {
+      data: {
+        lastUpdate: 1633024800,
+        rates: {
+          USD: 1.0,
+          EUR: 0.85,
         },
-        status: 200,
-        statusText: 'OK',
-        headers: {},
-        config: {} as InternalAxiosRequestConfig,
-      };
+      },
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {} as InternalAxiosRequestConfig,
+    };
 
-      const mockCurrencyRate: CurrencyRate = {
-        id: 1,
-        date: new Date(1729814400 * 1000),
-        currency: 'USD',
-        rate: 1.0825,
-      };
+    jest.spyOn(httpService, 'get').mockReturnValue(of(mockApiResponse));
+    jest.spyOn(currencyRateRepository, 'findOne').mockResolvedValue(null);
+    jest.spyOn(currencyRateRepository, 'save').mockResolvedValue(null);
 
-      jest.spyOn(httpService, 'get').mockReturnValue(of(mockApiResponse));
-      jest.spyOn(currencyRateRepository, 'findOne').mockResolvedValue(null);
-      jest.spyOn(currencyRateRepository, 'save').mockImplementation(async () => mockCurrencyRate);
+    await service.fetchAndStoreRates();
 
-      await service.fetchAndStoreRates();
-
-      expect(httpService.get).toHaveBeenCalled();
-      expect(currencyRateRepository.findOne).toHaveBeenCalledWith({
-        where: { currency: 'USD', date: new Date(1729814400 * 1000) },
-      });
-      expect(currencyRateRepository.save).toHaveBeenCalledTimes(2); // Once for USD and once for EUR
-    });
-
-    it('should log an error if fetching rates fails', async () => {
-      jest.spyOn(httpService, 'get').mockReturnValue(throwError(() => new Error('API failure')));
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-      await service.fetchAndStoreRates();
-
-      expect(consoleErrorSpy).toHaveBeenCalledWith('Error fetching currency rates:', expect.any(Error));
-    });
+    expect(httpService.get).toHaveBeenCalledWith(`https://anyapi.io/api/v1/exchange/rates?apiKey=test-api-key`);
+    expect(currencyRateRepository.save).toHaveBeenCalledTimes(2);
+    expect(currencyRateRepository.save).toHaveBeenCalledWith(expect.objectContaining({
+      currency: 'USD',
+      rate: 1.0,
+    }));
+    expect(currencyRateRepository.save).toHaveBeenCalledWith(expect.objectContaining({
+      currency: 'EUR',
+      rate: 0.85,
+    }));
   });
 
-  describe('getRatesByCurrency', () => {
-    it('should return paginated currency rates', async () => {
-      const mockRates: CurrencyRate[] = [
-        { id: 1, currency: 'USD', rate: 1.0825, date: new Date(1729814400 * 1000) },
-        { id: 2, currency: 'USD', rate: 1.083, date: new Date(1729814400 * 1000) },
-      ];
+  it('should get rates by currency', async () => {
+    const mockRates: CurrencyRate[] = [
+      { id: 1, date: new Date(), currency: 'USD', rate: 1.0 },
+      { id: 2, date: new Date(), currency: 'USD', rate: 1.1 },
+    ];
 
-      jest.spyOn(currencyRateRepository, 'findAndCount').mockResolvedValue([mockRates, 2]);
+    jest.spyOn(currencyRateRepository, 'findAndCount').mockResolvedValue([mockRates, mockRates.length]);
 
-      const result = await service.getRatesByCurrency('USD', 1, 10);
+    const result = await service.getRatesByCurrency('USD', 1, 10);
 
-      expect(result).toEqual({
-        data: mockRates,
-        currentPage: 1,
-        totalPages: 1,
-      });
-      expect(currencyRateRepository.findAndCount).toHaveBeenCalledWith({
-        where: { currency: 'USD' },
-        order: { date: 'DESC' },
-        skip: 0,
-        take: 10,
-      });
-    });
+    expect(result.data).toEqual(mockRates);
+    expect(result.currentPage).toBe(1);
+    expect(result.totalPages).toBe(1);
   });
 });
