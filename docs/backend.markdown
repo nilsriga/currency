@@ -1,4 +1,8 @@
-
+---
+layout: page
+title: Backend Documentation
+permalink: /backend/
+---
 
 # Currency Exchange Rates API
 
@@ -193,4 +197,3 @@ The application fetches currency exchange rates from an external API and stores 
 ### Configuration Files
 - `tsconfig.build.json`: TypeScript configuration file for the build process.
 - `tsconfig.json`: TypeScript configuration file for the project.
-```

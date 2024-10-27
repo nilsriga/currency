@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Backend Documentation | Currency Exchange Rates API Documentation</title>
+<meta name="generator" content="Jekyll v4.3.4" />
+<meta property="og:title" content="Backend Documentation" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Documentation for the Currency Exchange Rates API project." />
+<meta property="og:description" content="Documentation for the Currency Exchange Rates API project." />
+<link rel="canonical" href="http://localhost:4000/docs/backend/" />
+<meta property="og:url" content="http://localhost:4000/docs/backend/" />
+<meta property="og:site_name" content="Currency Exchange Rates API Documentation" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Backend Documentation" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Documentation for the Currency Exchange Rates API project.","headline":"Backend Documentation","url":"http://localhost:4000/docs/backend/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/docs/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/docs/feed.xml" title="Currency Exchange Rates API Documentation" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/docs/">Currency Exchange Rates API Documentation</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/docs/backend/">Backend Documentation</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Backend Documentation</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="currency-exchange-rates-api">Currency Exchange Rates API</h1>
+
+<p>This project is a NestJS application that provides an API for fetching and storing currency exchange rates. It uses TypeORM for database interactions, Jest for testing, and integrates with Sentry for error tracking.</p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+  <li><a href="#setup-and-run">Setup and Run</a></li>
+  <li><a href="#project-structure">Project Structure</a></li>
+  <li><a href="#nestjs-project-structure-and-router">NestJS Project Structure and Router</a></li>
+  <li><a href="#typeorm-and-jest">TypeORM and Jest</a></li>
+  <li><a href="#code-functionality">Code Functionality</a></li>
+  <li><a href="#file-descriptions">File Descriptions</a></li>
+</ol>
+
+<h2 id="setup-and-run">Setup and Run</h2>
+
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+  <li>Node.js (v22)</li>
+  <li>npm</li>
+  <li>MySQL (or any other database supported by TypeORM)</li>
+</ul>
+
+<h3 id="steps">Steps</h3>
+<ol>
+  <li><strong>Clone the repository:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone &lt;repository-url&gt;
+<span class="nb">cd</span> &lt;repository-directory&gt;
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Install dependencies:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Set up environment variables:</strong> Create a <code class="language-plaintext highlighter-rouge">.env</code> file in the root directory and add the following variables:
+    <pre><code class="language-env">DATABASE_HOST=localhost
+DATABASE_PORT=3306
+DATABASE_USERNAME=root
+DATABASE_PASSWORD=yourpassword
+DATABASE_NAME=currencies
+ANYAPI_KEY=your_api_key
+SENTRY_KEY=your_sentry_key
+</code></pre>
+  </li>
+  <li><strong>Run database migrations:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run typeorm migration:run
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Start the application:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run start
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Run tests:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run <span class="nb">test</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="project-structure">Project Structure</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.
+|-- README.md
+|-- nest-cli.json
+|-- package-lock.json
+|-- package.json
+|-- src
+|   |-- app.controller.spec.ts
+|   |-- app.controller.ts
+|   |-- app.module.ts
+|   |-- app.service.ts
+|   |-- currency
+|   |   |-- currency.controller.spec.ts
+|   |   |-- currency.controller.ts
+|   |   |-- currency.module.ts
+|   |   |-- currency.service.spec.ts
+|   |   `-- currency.service.ts
+|   |-- db
+|   |   |-- data-source.ts
+|   |   |-- entities
+|   |   |   `-- CurrencyRate.entity.ts
+|   |   `-- migrations
+|   |       `-- 1729369938238-currency-rates.ts
+|   |-- instrument.ts
+|   `-- main.ts
+|-- test
+|   |-- app.e2e-spec.ts
+|   `-- currency.service.integration.spec.ts
+|-- tsconfig.build.json
+`-- tsconfig.json
+</code></pre></div></div>
+
+<h2 id="nestjs-project-structure-and-router">NestJS Project Structure and Router</h2>
+
+<p>NestJS follows a modular architecture, which helps in organizing the code into cohesive blocks. Each module encapsulates related components like controllers, services, and entities.</p>
+
+<ul>
+  <li><strong>Controllers</strong> handle incoming requests and return responses to the client.</li>
+  <li><strong>Services</strong> contain the business logic and interact with the database.</li>
+  <li><strong>Modules</strong> group related controllers and services together.</li>
+</ul>
+
+<h1 id="project-structure-1">Project Structure</h1>
+
+<h2 id="root-directory">Root Directory</h2>
+<ul>
+  <li><strong>README.md</strong>: Contains the documentation for the project.</li>
+  <li><strong>nest-cli.json</strong>: Configuration file for the Nest CLI.</li>
+  <li><strong>package-lock.json</strong>: Automatically generated file that describes the exact tree that was generated by npm.</li>
+  <li><strong>package.json</strong>: Contains metadata about the project and its dependencies.</li>
+</ul>
+
+<h2 id="src-directory">src Directory</h2>
+<ul>
+  <li><strong>app.controller.spec.ts</strong>: Unit tests for the <code class="language-plaintext highlighter-rouge">AppController</code>.</li>
+  <li><strong>app.controller.ts</strong>: Defines the main controller for the application.</li>
+  <li><strong>app.module.ts</strong>: The root module of the application.</li>
+  <li><strong>app.service.ts</strong>: Defines the main service for the application.</li>
+</ul>
+
+<h3 id="currency-directory">currency Directory</h3>
+<ul>
+  <li><strong>currency.controller.spec.ts</strong>: Unit tests for the <code class="language-plaintext highlighter-rouge">CurrencyController</code>.</li>
+  <li><strong>currency.controller.ts</strong>: Defines the controller for currency-related operations.</li>
+  <li><strong>currency.module.ts</strong>: Module for the currency feature.</li>
+  <li><strong>currency.service.spec.ts</strong>: Unit tests for the <code class="language-plaintext highlighter-rouge">CurrencyService</code>.</li>
+  <li><strong>currency.service.ts</strong>: Defines the service for currency-related operations.</li>
+</ul>
+
+<h3 id="db-directory">db Directory</h3>
+<ul>
+  <li><strong>data-source.ts</strong>: Configuration for the TypeORM data source.</li>
+  <li><strong>entities Directory</strong>
+    <ul>
+      <li><strong>CurrencyRate.entity.ts</strong>: Defines the <code class="language-plaintext highlighter-rouge">CurrencyRate</code> entity for TypeORM.</li>
+    </ul>
+  </li>
+  <li><strong>migrations Directory</strong>
+    <ul>
+      <li><strong>1729369938238-currency-rates.ts</strong>: Migration file for the <code class="language-plaintext highlighter-rouge">CurrencyRate</code> entity.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="other-files">Other Files</h3>
+<ul>
+  <li><strong>instrument.ts</strong>: Contains instrumentation code, possibly for Sentry.</li>
+  <li><strong>main.ts</strong>: The entry point of the application.</li>
+</ul>
+
+<h2 id="test-directory">test Directory</h2>
+<ul>
+  <li><strong>app.e2e-spec.ts</strong>: End-to-end tests for the application.</li>
+  <li><strong>currency.service.integration.spec.ts</strong>: Integration tests for the <code class="language-plaintext highlighter-rouge">CurrencyService</code>.</li>
+</ul>
+
+<h2 id="configuration-files">Configuration Files</h2>
+<ul>
+  <li><strong>tsconfig.build.json</strong>: TypeScript configuration file for the build process.</li>
+  <li><strong>tsconfig.json</strong>: TypeScript configuration file for the project.</li>
+</ul>
+
+<h3 id="router">Router</h3>
+<p>The router in NestJS is defined by the controllers. Each controller can have multiple routes that handle different HTTP methods (GET, POST, etc.).</p>
+
+<h2 id="typeorm-and-jest">TypeORM and Jest</h2>
+
+<h3 id="typeorm">TypeORM</h3>
+<p>TypeORM is an ORM (Object-Relational Mapper) that allows you to interact with your database using TypeScript classes and decorators. It supports various databases like MySQL, PostgreSQL, SQLite, etc.</p>
+
+<h3 id="jest">Jest</h3>
+<p>Jest is a testing framework that allows you to write unit and integration tests for your application. It provides a simple API to mock dependencies and assert the behavior of your code.</p>
+
+<h2 id="code-functionality">Code Functionality</h2>
+
+<p>The application fetches currency exchange rates from an external API and stores them in a database. It provides endpoints to retrieve the stored rates and integrates with Sentry for error tracking.</p>
+
+<h2 id="file-descriptions">File Descriptions</h2>
+
+<h3 id="root-directory-1">Root Directory</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">README.md</code>: Contains the documentation for the project.</li>
+  <li><code class="language-plaintext highlighter-rouge">nest-cli.json</code>: Configuration file for the Nest CLI.</li>
+  <li><code class="language-plaintext highlighter-rouge">package-lock.json</code>: Automatically generated file that describes the exact tree that was generated by npm.</li>
+  <li><code class="language-plaintext highlighter-rouge">package.json</code>: Contains metadata about the project and its dependencies.</li>
+</ul>
+
+<h3 id="src-directory-1">src Directory</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">app.controller.spec.ts</code>: Unit tests for the <code class="language-plaintext highlighter-rouge">AppController</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">app.controller.ts</code>: Defines the main controller for the application.</li>
+  <li><code class="language-plaintext highlighter-rouge">app.module.ts</code>: The root module of the application.</li>
+  <li><code class="language-plaintext highlighter-rouge">app.service.ts</code>: Defines the main service for the application.</li>
+</ul>
+
+<h3 id="currency-directory-1">currency Directory</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">currency.controller.spec.ts</code>: Unit tests for the <code class="language-plaintext highlighter-rouge">CurrencyController</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">currency.controller.ts</code>: Defines the controller for currency-related operations.</li>
+  <li><code class="language-plaintext highlighter-rouge">currency.module.ts</code>: Module for the currency feature.</li>
+  <li><code class="language-plaintext highlighter-rouge">currency.service.spec.ts</code>: Unit tests for the <code class="language-plaintext highlighter-rouge">CurrencyService</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">currency.service.ts</code>: Defines the service for currency-related operations.</li>
+</ul>
+
+<h3 id="db-directory-1">db Directory</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">data-source.ts</code>: Configuration for the TypeORM data source.
+    <ul>
+      <li><strong>entities Directory</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">CurrencyRate.entity.ts</code>: Defines the <code class="language-plaintext highlighter-rouge">CurrencyRate</code> entity for TypeORM.</li>
+        </ul>
+      </li>
+      <li><strong>migrations Directory</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">1729369938238-currency-rates.ts</code>: Migration file for the <code class="language-plaintext highlighter-rouge">CurrencyRate</code> entity.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="other-files-1">Other Files</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">instrument.ts</code>: Contains instrumentation code, possibly for Sentry.</li>
+  <li><code class="language-plaintext highlighter-rouge">main.ts</code>: The entry point of the application.</li>
+</ul>
+
+<h3 id="test-directory-1">test Directory</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">app.e2e-spec.ts</code>: End-to-end tests for the application.</li>
+  <li><code class="language-plaintext highlighter-rouge">currency.service.integration.spec.ts</code>: Integration tests for the <code class="language-plaintext highlighter-rouge">CurrencyService</code>.</li>
+</ul>
+
+<h3 id="configuration-files-1">Configuration Files</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">tsconfig.build.json</code>: TypeScript configuration file for the build process.</li>
+  <li><code class="language-plaintext highlighter-rouge">tsconfig.json</code>: TypeScript configuration file for the project.</li>
+</ul>
+
+  </div>
+
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/docs/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Currency Exchange Rates API Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Currency Exchange Rates API Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/jekyll"><svg class="svg-icon"><use xlink:href="/docs/assets/minima-social-icons.svg#github"></use></svg> <span class="username">jekyll</span></a></li><li><a href="https://www.twitter.com/jekyllrb"><svg class="svg-icon"><use xlink:href="/docs/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">jekyllrb</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Documentation for the Currency Exchange Rates API project.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
