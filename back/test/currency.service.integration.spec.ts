@@ -49,6 +49,7 @@ describe('CurrencyService Integration (Real DB and HTTP)', () => {
         // Step 1: Perform the HTTP call to the actual API
         console.log('viens')
         console.log(httpService.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${apiKey}`))
+        console.log(`https://anyapi.io/api/v1/exchange/rates?apiKey=${apiKey}`)
         const response = await lastValueFrom(httpService.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${apiKey}`));
         console.log('divi')
         expect(response.status).toBe(200);
