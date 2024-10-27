@@ -34,6 +34,7 @@ jobs:
           DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}  # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
           DATABASE_NAME: ${{ secrets.DATABASE_NAME }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
+          ANYAPI_KEY: ${{ secrets.ANYAPI_KEY }}       # Add this variable in your github repository > Settings > Variables and Secrets > Add Secret
         run: |
           cd back
           npm run test

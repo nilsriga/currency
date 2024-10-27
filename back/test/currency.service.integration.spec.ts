@@ -47,11 +47,7 @@ describe('CurrencyService Integration (Real DB and HTTP)', () => {
         const apiKey = process.env.ANYAPI_KEY;
         
         // Step 1: Perform the HTTP call to the actual API
-        console.log('viens')
-        console.log(httpService.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${apiKey}`))
-        console.log(`https://anyapi.io/api/v1/exchange/rates?apiKey=${apiKey}`)
         const response = await lastValueFrom(httpService.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${apiKey}`));
-        console.log('divi')
         expect(response.status).toBe(200);
         expect(response.data).toHaveProperty('rates');
 
@@ -62,9 +58,7 @@ describe('CurrencyService Integration (Real DB and HTTP)', () => {
 
         // Step 2: Store the data in the database via the service
         await delay(1000); // Optional delay to mimic real-world timing
-        console.log('trīs')
         const fetchResult = await service.fetchAndStoreRates();
-        console.log('cetri')
         expect(fetchResult).toContain("Successful API call");
 
         // Step 3: Retrieve data from the database and verify the stored values
