@@ -1,6 +1,7 @@
 // src/app.module.ts
 
 import { Module } from '@nestjs/common';
+import { SentryModule } from '@sentry/nestjs/setup';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -10,6 +11,7 @@ import { CurrencyRate } from './db/entities/CurrencyRate.entity'; // Import the 
 
 @Module({
   imports: [
+    SentryModule.forRoot(),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
