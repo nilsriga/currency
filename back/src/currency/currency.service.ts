@@ -24,9 +24,11 @@ export class CurrencyService {
     async fetchAndStoreRates(): Promise<string> {
         try {
             const apiKey = this.configService.get<string>('ANYAPI_KEY');
+            console.log('pieci')
             const response = await lastValueFrom(
                 this.httpService.get(`https://anyapi.io/api/v1/exchange/rates?apiKey=${apiKey}`)
             );
+            console.log('sesi')
             const data = response.data;
             const date = new Date(data.lastUpdate * 1000); // Convert timestamp to Date
 
