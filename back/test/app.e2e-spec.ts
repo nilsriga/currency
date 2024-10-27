@@ -15,6 +15,10 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
+  afterEach(async () => {
+    await app.close();
+  });
+
   it('/ (GET)', () => {
     return request(app.getHttpServer())
       .get('/')
@@ -22,8 +26,6 @@ describe('AppController (e2e)', () => {
       .expect(`Available endpoints: \n - GET 'currency/usd?page=1&limit=10'`);
   });
 });
-
-
 
 describe('Main (e2e)', () => {
   let app: INestApplication;
