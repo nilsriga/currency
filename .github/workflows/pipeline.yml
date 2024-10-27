@@ -27,6 +27,7 @@ jobs:
           cd back
           npm install
           npm install mysql --save
+          npm install sqlite3 --save
 
       - name: Run tests
         env:
