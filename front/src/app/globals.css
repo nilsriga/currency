@@ -1,27 +1,36 @@
+/* Import Tailwind base styles */
 @tailwind base;
+
+/* Import Tailwind component styles */
 @tailwind components;
+
+/* Import Tailwind utility styles */
 @tailwind utilities;
 
+/* Define custom CSS variables for light mode */
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
+/* Define custom CSS variables for dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #171717;
   }
 }
 
+/* Apply custom styles to the body element */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: 'Segoe UI Emoji', Arial, Helvetica, sans-serif;
+  color: var(--foreground); /* Set text color */
+  background: var(--background); /* Set background color */
+  font-family: 'Segoe UI Emoji', Arial, Helvetica, sans-serif; /* Set font family */
 }
 
+/* Define custom utility classes */
 @layer utilities {
   .text-balance {
-    text-wrap: balance;
+    text-wrap: balance; /* Apply balanced text wrapping */
   }
 }

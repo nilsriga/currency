@@ -459,7 +459,7 @@
     ],
     "screenshots": [
         {
-            "src": "/icons//ui-screenshot.png",
+            "src": "/ui-screenshot.png",
             "sizes": "640x320",
             "type": "image/png",
             "form_factor": "wide",

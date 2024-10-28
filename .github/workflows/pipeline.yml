@@ -13,7 +13,7 @@ on:
 # Define the jobs to be run
 jobs:  
   # Job to run backend tests
-  backend-tests:    
+  backend-tests-and-build:    
     runs-on: self-hosted    # Specify the runner to use
     name: Run Backend Tests    # Name of the job
     steps:      
@@ -40,7 +40,7 @@ jobs:
           npm run test  
 
   # Job to run frontend tests
-  frontend-tests:    
+  frontend-build:    
     runs-on: self-hosted    # Specify the runner to use
     name: Run Frontend Tests    # Name of the job
     steps:      
@@ -54,17 +54,27 @@ jobs:
         run: |          
           cd front          
           npm install      
-      - name: Run tests        # Step to run frontend tests
+      - name: Run build
+        env:          
+          NODE_ENV: production
+          PUBLIC_URL: http://localhost:3001
+          NEXT_PUBLIC_API_URL: https://nilsriga.ddns.net/api
+          APP_NAME: Currency Converter
+          APP_DEFAULT_TITLE: EUR Converter
+          APP_TITLE_TEMPLATE: \%s EUR Converter
+          APP_DESCRIPTION: See EUR exchange rates for 30 different currencies
+          
         run: |          
           cd front          
-          npm test  
+          npm run lint
+          npm run build  
 
   # Job to deploy the application
   deploy:    
     runs-on: self-hosted    # Specify the runner to use
     needs:       # Define dependencies on other jobs
-      - backend-tests      
-      - frontend-tests    
+      - backend-tests-and-build      
+      - frontend-build    
     name: Deploy Application    # Name of the job
     steps:      
       - name: Checkout code        # Step to checkout the code from the repository

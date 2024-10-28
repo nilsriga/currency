@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Frontend Documentation | Currency Exchange Rates API Documentation</title>
+<meta name="generator" content="Jekyll v4.3.4" />
+<meta property="og:title" content="Frontend Documentation" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Documentation for the Currency Exchange Rates API project." />
+<meta property="og:description" content="Documentation for the Currency Exchange Rates API project." />
+<link rel="canonical" href="https://nilsriga.github.io/currency/frontend/" />
+<meta property="og:url" content="https://nilsriga.github.io/currency/frontend/" />
+<meta property="og:site_name" content="Currency Exchange Rates API Documentation" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Frontend Documentation" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Documentation for the Currency Exchange Rates API project.","headline":"Frontend Documentation","url":"https://nilsriga.github.io/currency/frontend/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/currency/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://nilsriga.github.io/currency/feed.xml" title="Currency Exchange Rates API Documentation" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/currency/">Currency Exchange Rates API Documentation</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/currency/backend/">Backend Documentation</a><a class="page-link" href="/currency/frontend/">Frontend Documentation</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Frontend Documentation</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="currency-exchange-rates-api">Currency Exchange Rates API</h1>
+
+<p>This project is a Next.js application that provides an API for fetching and displaying currency exchange rates. It uses Redux for state management and integrates with the <code class="language-plaintext highlighter-rouge">@ducanh2912/next-pwa</code> package for Progressive Web App (PWA) support.</p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+  <li><a href="#setup-and-run">Setup and Run</a></li>
+  <li><a href="#project-structure">Project Structure</a></li>
+  <li><a href="#nextjs-project-structure-and-app-router">Next.js Project Structure and App Router</a></li>
+  <li><a href="#ducanh2912next-pwa">@ducanh2912/next-pwa</a></li>
+  <li><a href="#redux">Redux</a></li>
+  <li><a href="#code-functionality">Code Functionality</a></li>
+  <li><a href="#file-descriptions">File Descriptions</a></li>
+</ol>
+
+<h2 id="setup-and-run">Setup and Run</h2>
+
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+  <li>Node.js (v14 or later)</li>
+  <li>npm</li>
+</ul>
+
+<h3 id="steps">Steps</h3>
+<ol>
+  <li><strong>Clone the repository:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone &lt;repository-url&gt;
+<span class="nb">cd</span> &lt;repository-directory&gt;
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Install dependencies:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Set up environment variables:</strong> Create a <code class="language-plaintext highlighter-rouge">.env</code> file in the root directory and add the following variables:
+    <pre><code class="language-env">NEXT_PUBLIC_API_URL=http://your-api-url
+</code></pre>
+  </li>
+  <li><strong>Run the development server:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run dev
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Build the application:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run build
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Start the production server:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm start
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="project-structure">Project Structure</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.
+|-- README.md
+|-- next-env.d.ts
+|-- next.config.mjs
+|-- package-lock.json
+|-- package.json
+|-- postcss.config.mjs
+|-- public
+|   |-- manifest.json
+|   |-- robots.txt
+|   |-- sw.js
+|   |-- sw.js.map
+|   |-- ui-screenshot.png
+|   |-- workbox-7144475a.js
+|   `-- workbox-7144475a.js.map
+|-- src
+|   |-- app
+|   |   |-- components
+|   |   |   `-- currency
+|   |   |       |-- currencyLineChart.tsx
+|   |   |       |-- currencyOptions.tsx
+|   |   |       |-- currencySelector.tsx
+|   |   |       `-- currencyTable.tsx
+|   |   |-- favicon.ico
+|   |   |-- globals.css
+|   |   |-- layout.tsx
+|   |   `-- page.tsx
+|   |-- custom-sw.js
+|   `-- redux
+|       |-- currencySlice.ts
+|       |-- providers.tsx
+|       `-- store.ts
+|-- tailwind.config.ts
+`-- tsconfig.json
+</code></pre></div></div>
+
+<h1 id="project-structure-1">Project Structure</h1>
+
+<h2 id="root-directory">Root Directory</h2>
+<ul>
+  <li>
+    <p><strong>README.md</strong>: Contains the documentation for the project, explaining how to set up and run the code, and providing an overview of the project structure.</p>
+  </li>
+  <li>
+    <p><strong>next-env.d.ts</strong>: TypeScript declaration file that ensures TypeScript understands the Next.js environment.</p>
+  </li>
+  <li>
+    <p><strong>next.config.mjs</strong>: Configuration file for Next.js, allowing customization of the build process and other settings.</p>
+  </li>
+  <li>
+    <p><strong>package-lock.json</strong>: Automatically generated file that describes the exact tree that was generated by npm, ensuring consistent installs across different environments.</p>
+  </li>
+  <li>
+    <p><strong>package.json</strong>: Contains metadata about the project, including dependencies, scripts, and other configurations.</p>
+  </li>
+  <li>
+    <p><strong>postcss.config.mjs</strong>: Configuration file for PostCSS, a tool for transforming CSS with JavaScript plugins.</p>
+  </li>
+</ul>
+
+<h2 id="public-directory">Public Directory</h2>
+<ul>
+  <li>
+    <p><strong>manifest.json</strong>: Provides metadata for the web application, such as name, icons, and theme colors, used for Progressive Web Apps (PWA).</p>
+  </li>
+  <li>
+    <p><strong>robots.txt</strong>: Instructions for web crawlers about which pages to crawl and index.</p>
+  </li>
+  <li>
+    <p><strong>sw.js</strong>: Service worker file for caching and offline functionality.</p>
+  </li>
+  <li>
+    <p><strong>sw.js.map</strong>: Source map for the service worker file, used for debugging.</p>
+  </li>
+  <li>
+    <p><strong>ui-screenshot.png</strong>: Screenshot of the user interface, typically used for documentation or promotional purposes.</p>
+  </li>
+  <li>
+    <p><strong>workbox-7144475a.js</strong>: Workbox library file for managing service workers and caching strategies.</p>
+  </li>
+  <li>
+    <p><strong>workbox-7144475a.js.map</strong>: Source map for the Workbox library file, used for debugging.</p>
+  </li>
+</ul>
+
+<h2 id="src-directory">src Directory</h2>
+<h3 id="app-directory">app Directory</h3>
+<ul>
+  <li><strong>components Directory</strong>
+    <ul>
+      <li><strong>currency Directory</strong>
+        <ul>
+          <li><strong>currencyLineChart.tsx</strong>: React component that renders a line chart using D3.js to display currency exchange rates.</li>
+          <li><strong>currencyOptions.tsx</strong>: React component that provides options for selecting different currencies.</li>
+          <li><strong>currencySelector.tsx</strong>: React component that allows users to select a currency from a dropdown menu.</li>
+          <li><strong>currencyTable.tsx</strong>: React component that displays currency exchange rates in a table format.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>favicon.ico</strong>: Icon file for the website, displayed in the browser tab.</p>
+  </li>
+  <li>
+    <p><strong>globals.css</strong>: Global CSS file that defines styles for the entire application, including custom variables and utility classes.</p>
+  </li>
+  <li>
+    <p><strong>layout.tsx</strong>: React component that defines the layout of the application, including headers, footers, and navigation.</p>
+  </li>
+  <li><strong>page.tsx</strong>: Main page component for the application, typically the entry point for the user interface.</li>
+</ul>
+
+<h3 id="custom-swjs">custom-sw.js</h3>
+<ul>
+  <li>Custom service worker file for additional caching and offline functionality.</li>
+</ul>
+
+<h3 id="redux-directory">redux Directory</h3>
+<ul>
+  <li><strong>currencySlice.ts</strong>: Redux slice that defines the state and actions for managing currency data.</li>
+  <li><strong>providers.tsx</strong>: React component that provides the Redux store to the application.</li>
+  <li><strong>store.ts</strong>: Configuration file for the Redux store, combining reducers and middleware.</li>
+</ul>
+
+<h2 id="configuration-files">Configuration Files</h2>
+<ul>
+  <li>
+    <p><strong>tailwind.config.ts</strong>: Configuration file for Tailwind CSS, allowing customization of the utility classes and themes.</p>
+  </li>
+  <li>
+    <p><strong>tsconfig.json</strong>: TypeScript configuration file that defines compiler options and project settings.</p>
+  </li>
+</ul>
+
+<h2 id="nextjs-project-structure-and-app-router">Next.js Project Structure and App Router</h2>
+
+<p>Next.js follows a file-based routing system. Each file named <code class="language-plaintext highlighter-rouge">page.tsx</code> within the <code class="language-plaintext highlighter-rouge">/src/app</code> directory and its subdirectories becomes a route in the application. For example:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">/src/app/home/page.tsx</code> will be accessible at <code class="language-plaintext highlighter-rouge">/home</code>.</li>
+  <li><code class="language-plaintext highlighter-rouge">/src/app/about/page.tsx</code> will be accessible at <code class="language-plaintext highlighter-rouge">/about</code>.</li>
+</ul>
+
+<p><strong>Key Files:</strong></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">layout.tsx</code>: Defines the layout of the application, including headers, footers, and navigation.</li>
+  <li><code class="language-plaintext highlighter-rouge">page.tsx</code>: Main page component for the application, typically the entry point for the user interface.</li>
+</ul>
+
+<h2 id="ducanh2912next-pwa">@ducanh2912/next-pwa</h2>
+
+<p>The <code class="language-plaintext highlighter-rouge">@ducanh2912/next-pwa</code> package is used to add PWA support to the Next.js application. It helps in generating a service worker and caching strategies to make the application work offline.</p>
+
+<ul>
+  <li><strong>Configuration</strong>: <code class="language-plaintext highlighter-rouge">next.config.mjs</code>: The configuration file for Next.js, which includes settings for the <code class="language-plaintext highlighter-rouge">@ducanh2912/next-pwa</code> package.</li>
+</ul>
+
+<h2 id="redux">Redux</h2>
+
+<p>Redux is used for state management in the application. It helps in managing the global state and making it accessible across different components.</p>
+
+<p><strong>Key Files:</strong></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">store.ts</code>: Configures the Redux store and combines reducers.</li>
+  <li><code class="language-plaintext highlighter-rouge">currencySlice.ts</code>: Defines the state and actions for managing currency data.</li>
+  <li><code class="language-plaintext highlighter-rouge">providers.tsx</code>: Provides the Redux store to the application.</li>
+</ul>
+
+<h2 id="code-functionality">Code Functionality</h2>
+
+<p>The application fetches currency exchange rates from an external API and displays them in a table and a line chart. Users can select different currencies and navigate through different pages of exchange rates.</p>
+
+<h2 id="file-descriptions">File Descriptions</h2>
+
+<h3 id="root-directory-1">Root Directory</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">README.md</code>: Contains the documentation for the project.</li>
+  <li><code class="language-plaintext highlighter-rouge">next-env.d.ts</code>: TypeScript declaration file that ensures TypeScript understands the Next.js environment.</li>
+  <li><code class="language-plaintext highlighter-rouge">next.config.mjs</code>: Configuration file for Next.js, allowing customization of the build process and other settings.</li>
+  <li><code class="language-plaintext highlighter-rouge">package-lock.json</code>: Automatically generated file that describes the exact tree that was generated by npm, ensuring consistent installs across different environments.</li>
+  <li><code class="language-plaintext highlighter-rouge">package.json</code>: Contains metadata about the project, including dependencies, scripts, and other configurations.</li>
+  <li><code class="language-plaintext highlighter-rouge">postcss.config.mjs</code>: Configuration file for PostCSS, a tool for transforming CSS with JavaScript plugins.</li>
+</ul>
+
+<h3 id="public-directory-1">Public Directory</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">manifest.json</code>: Provides metadata for the web application, such as name, icons, and theme colors, used for Progressive Web Apps (PWA).</li>
+  <li><code class="language-plaintext highlighter-rouge">robots.txt</code>: Instructions for web crawlers about which pages to crawl and index.</li>
+  <li><code class="language-plaintext highlighter-rouge">sw.js</code>: Service worker file for caching and offline functionality.</li>
+  <li><code class="language-plaintext highlighter-rouge">sw.js.map</code>: Source map for the service worker file, used for debugging.</li>
+  <li><code class="language-plaintext highlighter-rouge">ui-screenshot.png</code>: Screenshot of the user interface, typically used for documentation or promotional purposes.</li>
+  <li><code class="language-plaintext highlighter-rouge">workbox-7144475a.js</code>: Workbox library file for managing service workers and caching strategies.</li>
+  <li><code class="language-plaintext highlighter-rouge">workbox-7144475a.js.map</code>: Source map for the Workbox library file, used for debugging.</li>
+</ul>
+
+<h3 id="src-directory-1">src Directory</h3>
+<h4 id="app-directory-1">app Directory</h4>
+<ul>
+  <li><strong>components Directory</strong>
+    <ul>
+      <li><strong>currency Directory</strong>
+        <ul>
+          <li><code class="language-plaintext highlighter-rouge">currencyLineChart.tsx</code>: React component that renders a line chart using D3.js to display currency exchange rates.</li>
+          <li><code class="language-plaintext highlighter-rouge">currencyOptions.tsx</code>: React component that provides options for selecting different currencies.</li>
+          <li><code class="language-plaintext highlighter-rouge">currencySelector.tsx</code>: React component that allows users to select a currency from a dropdown menu.</li>
+          <li><code class="language-plaintext highlighter-rouge">currencyTable.tsx</code>: React component that displays currency exchange rates in a table format.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">favicon.ico</code>: Icon file for the website, displayed in the browser tab.</li>
+  <li><code class="language-plaintext highlighter-rouge">globals.css</code>: Global CSS file that defines styles for the entire application, including custom variables and utility classes.</li>
+  <li><code class="language-plaintext highlighter-rouge">layout.tsx</code>: React component that defines the layout of the application, including headers, footers, and navigation.</li>
+  <li><code class="language-plaintext highlighter-rouge">page.tsx</code>: Main page component for the application, typically the entry point for the user interface.</li>
+</ul>
+
+<h4 id="custom-swjs-1">custom-sw.js</h4>
+<ul>
+  <li>Custom service worker file for additional caching and offline functionality.</li>
+</ul>
+
+<h4 id="redux-directory-1">redux Directory</h4>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">currencySlice.ts</code>: Redux slice that defines the state and actions for managing currency data.</li>
+  <li><code class="language-plaintext highlighter-rouge">providers.tsx</code>: React component that provides the Redux store to the application.</li>
+  <li><code class="language-plaintext highlighter-rouge">store.ts</code>: Configuration file for the Redux store, combining reducers and middleware.</li>
+</ul>
+
+<h3 id="configuration-files-1">Configuration Files</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">tailwind.config.ts</code>: Configuration file for Tailwind CSS, allowing customization of the utility classes and themes.</li>
+  <li><code class="language-plaintext highlighter-rouge">tsconfig.json</code>: TypeScript configuration file that defines compiler options and project settings.</li>
+</ul>
+
+  </div>
+
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/currency/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Currency Exchange Rates API Documentation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Currency Exchange Rates API Documentation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/jekyll"><svg class="svg-icon"><use xlink:href="/currency/assets/minima-social-icons.svg#github"></use></svg> <span class="username">jekyll</span></a></li><li><a href="https://www.twitter.com/jekyllrb"><svg class="svg-icon"><use xlink:href="/currency/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">jekyllrb</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Documentation for the Currency Exchange Rates API project.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
