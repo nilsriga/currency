@@ -61,14 +61,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en"> {/* Set the language of the document to English */}
+    <html lang="en">
       <head>
-        <link rel="manifest" href="/manifest.json" /> {/* Link the manifest file */}
-        <meta name="theme-color" content="#ffffff" /> {/* Optional: Set the theme color */}
-        <meta charSet="UTF-8" /> {/* Set the character encoding to UTF-8 */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#ffffff" />
+        <meta charSet="UTF-8" />
       </head>
       <body>
-        <Providers>{children}</Providers> {/* Wrap the children components with Providers */}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

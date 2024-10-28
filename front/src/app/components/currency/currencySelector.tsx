@@ -17,16 +17,13 @@ interface CurrencySelectorProps {
 const CurrencySelector: React.FC<CurrencySelectorProps> = ({ selectedCurrency, handleCurrencyChange }) => {
   return (
     <div className="mb-4">
-      {/* Label for the currency selector */}
       <label htmlFor="currency" className="mr-2">Select Currency:</label>
-      {/* Dropdown menu for selecting a currency */}
       <select
         id="currency"
-        value={selectedCurrency} // Set the value to the selected currency
-        onChange={handleCurrencyChange} // Call the handleCurrencyChange function when the selection changes
-        className="p-2 border rounded" // Apply Tailwind CSS classes for styling
+        value={selectedCurrency}
+        onChange={handleCurrencyChange}
+        className="p-2 border rounded"
       >
-        {/* Map through the currency options and create an option element for each */}
         {currencyOptions.map(option => (
           <option key={option.value} value={option.value}>
             {option.label}

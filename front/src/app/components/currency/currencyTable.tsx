@@ -19,15 +19,12 @@ const CurrencyTable: React.FC<CurrencyTableProps> = ({ rates, selectedCurrency }
   <table className="table-auto w-full text-center border-collapse">
     <thead>
       <tr>
-        {/* Table headers */}
         <th className="border px-4 py-2">Date Retrieved</th>
         <th className="border px-4 py-2">Rate {selectedCurrency.toUpperCase()}</th>
       </tr>
     </thead>
     <tbody>
-      {/* Check if there are any rates to display */}
       {rates.length > 0 ? (
-        // Map through the rates and create a table row for each rate
         rates.map((rate) => (
           <tr key={rate.id}>
             <td className="border px-4 py-2">{new Date(rate.date).toLocaleDateString('en-GB')}</td>
@@ -35,7 +32,6 @@ const CurrencyTable: React.FC<CurrencyTableProps> = ({ rates, selectedCurrency }
           </tr>
         ))
       ) : (
-        // Display a message if there are no rates available
         <tr>
           <td className="border px-4 py-2" colSpan={2}>No data available</td>
         </tr>

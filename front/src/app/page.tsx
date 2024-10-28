@@ -66,7 +66,6 @@ export default function Home() {
           Next
         </button>
       </div>
-      {/* Render the CurrencyLineChart */}
       <div className="mt-8">
         <h2 className="text-xl font-bold text-center mb-4">Exchange Rate Over Time</h2>
         <CurrencyLineChart rates={currentRates} />
