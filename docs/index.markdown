@@ -3,7 +3,8 @@
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
 layout: home
-
+title: Get Started
+permalink: /
 ---
 
 Live demo available at [https://nilsriga.ddns.net](https://nilsriga.ddns.net)
@@ -36,7 +37,7 @@ This repository contains the completed test project for **Trodo**, implementing 
 ├── back                 # Backend API (NestJS)
 ├── docs                 # Jekyll documentation for full project overview
 ├── front                # Main frontend (Next.js, SSR, PWA)
-└── front-vanilla        # Alternate frontend in vanilla JS
+└── front-vanilla        # Alternate frontend in vanilla React (is working)
 ```
 
 ## Setup Instructions
