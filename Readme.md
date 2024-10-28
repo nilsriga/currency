@@ -30,7 +30,7 @@ This repository contains the completed test project for **Trodo**, implementing 
 ├── back                 # Backend API (NestJS)
 ├── docs                 # Jekyll documentation for full project overview
 ├── front                # Main frontend (Next.js, SSR, PWA)
-└── front-vanilla        # Alternate frontend in vanilla JS
+└── front-vanilla        # Alternate frontend in vanilla React (is working)
 ```
 
 ## Setup Instructions

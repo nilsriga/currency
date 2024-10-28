@@ -6,7 +6,6 @@ layout: home
 
 ---
 
-# Currency Rate Conversion Chart
 Live demo available at [https://nilsriga.ddns.net](https://nilsriga.ddns.net)
 
 This repository contains the completed test project for **Trodo**, implementing a currency rate conversion chart using an external API. The project includes a **NestJS** backend, a **NextJS** SSR frontend, and is designed to run with a CI/CD pipeline, **Nginx** reverse proxy, and **PM2** process management. It is fully documented at [https://nilsriga.github.io/currency/](https://nilsriga.github.io/currency/) and includes setup instructions, detailed API documentation, and testing protocols.
