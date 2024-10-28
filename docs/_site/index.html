@@ -36,7 +36,221 @@
 </header>
 <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <div class="home">
+        <div class="home"><h1 id="currency-rate-conversion-chart">Currency Rate Conversion Chart</h1>
+<p>Live demo available at <a href="https://nilsriga.ddns.net">https://nilsriga.ddns.net</a></p>
+
+<p>This repository contains the completed test project for <strong>Trodo</strong>, implementing a currency rate conversion chart using an external API. The project includes a <strong>NestJS</strong> backend, a <strong>NextJS</strong> SSR frontend, and is designed to run with a CI/CD pipeline, <strong>Nginx</strong> reverse proxy, and <strong>PM2</strong> process management. It is fully documented at <a href="https://nilsriga.github.io/currency/">https://nilsriga.github.io/currency/</a> and includes setup instructions, detailed API documentation, and testing protocols.</p>
+
+<h2 id="project-overview">Project Overview</h2>
+
+<ul>
+  <li><strong>Backend</strong>: NestJS API with MySQL database and TypeORM, with Sentry for monitoring.</li>
+  <li><strong>Frontend</strong>: Next.js (SSR) PWA with Redux and 100% Lighthouse score.</li>
+  <li><strong>CI/CD</strong>: GitHub Actions configured for unit, integration, and e2e testing.</li>
+  <li><strong>Production Setup</strong>: Nginx reverse proxy, PM2 process management, self-hosted runner.</li>
+  <li><strong>Documentation</strong>: Full project documentation hosted via Jekyll in <code class="language-plaintext highlighter-rouge">/docs</code>.</li>
+</ul>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+  <li><a href="#project-structure">Project Structure</a></li>
+  <li><a href="#setup-instructions">Setup Instructions</a></li>
+  <li><a href="#development-commands">Development Commands</a></li>
+  <li><a href="#testing">Testing</a></li>
+  <li><a href="#production-setup">Production Setup</a></li>
+  <li><a href="#cicd-pipeline">CI/CD Pipeline</a></li>
+  <li><a href="#documentation">Documentation</a></li>
+</ol>
+
+<h2 id="project-structure">Project Structure</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.
+├── .github              # GitHub Actions for CI/CD
+├── admin                # Admin tools, including database dump and ecosystem config for PM2
+├── back                 # Backend API (NestJS)
+├── docs                 # Jekyll documentation for full project overview
+├── front                # Main frontend (Next.js, SSR, PWA)
+└── front-vanilla        # Alternate frontend in vanilla JS
+</code></pre></div></div>
+
+<h2 id="setup-instructions">Setup Instructions</h2>
+
+<h3 id="1-repository-and-dependencies">1. Repository and Dependencies</h3>
+<p>First, download the repository and install the dependencies for each section:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone &lt;repository-url&gt;
+<span class="nb">cd</span> &lt;repository-directory&gt;
+</code></pre></div></div>
+
+<h3 id="2-backend-setup-nestjs">2. Backend Setup (NestJS)</h3>
+
+<ol>
+  <li><strong>Navigate to the backend directory</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>back
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p><strong>Install MySQL</strong> (if not installed). Then create a new MySQL database.</p>
+  </li>
+  <li><strong>Configure Environment Variables</strong>:
+    <ul>
+      <li>Duplicate <code class="language-plaintext highlighter-rouge">example.env</code> as <code class="language-plaintext highlighter-rouge">.env</code> in the <code class="language-plaintext highlighter-rouge">back</code> folder.</li>
+      <li>Fill out <code class="language-plaintext highlighter-rouge">.env</code> with your MySQL connection details.</li>
+    </ul>
+  </li>
+  <li><strong>Install dependencies</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Run Database Migrations</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run typeorm migration:run
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Load Initial Data</strong>:
+    <ul>
+      <li>Navigate to the <code class="language-plaintext highlighter-rouge">admin</code> folder and load the <code class="language-plaintext highlighter-rouge">currencies.sql</code> file to populate the database with initial values:
+        <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql <span class="nt">-u</span> &lt;username&gt; <span class="nt">-p</span> &lt;database_name&gt; &lt; admin/currencies.sql
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Start Development Server</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run start:dev
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<blockquote>
+  <p><strong>Note</strong>: For testing environments, you may need to install MySQL and SQLite3 globally to avoid any errors:</p>
+  <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">-g</span> mysql sqlite3
+</code></pre></div>  </div>
+</blockquote>
+
+<h3 id="3-frontend-setup-nextjs">3. Frontend Setup (Next.js)</h3>
+
+<ol>
+  <li><strong>Navigate to the frontend directory</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ../front
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Configure Environment Variables</strong>:
+    <ul>
+      <li>Duplicate <code class="language-plaintext highlighter-rouge">example.env</code> as <code class="language-plaintext highlighter-rouge">.env</code> and customize as needed.</li>
+    </ul>
+  </li>
+  <li><strong>Install dependencies</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Start Development Server</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run dev
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="development-commands">Development Commands</h2>
+
+<h3 id="backend-commands">Backend Commands</h3>
+
+<ul>
+  <li><strong>Run Development Server</strong>: <code class="language-plaintext highlighter-rouge">npm run start:dev</code></li>
+  <li><strong>Run Database Migrations</strong>: <code class="language-plaintext highlighter-rouge">npm run typeorm migration:run</code></li>
+  <li><strong>Run Backend Tests</strong>: <code class="language-plaintext highlighter-rouge">npm run test</code></li>
+</ul>
+
+<h3 id="frontend-commands">Frontend Commands</h3>
+
+<ul>
+  <li><strong>Start Frontend Dev Server</strong>: <code class="language-plaintext highlighter-rouge">npm run dev</code></li>
+  <li><strong>Build for Production</strong>: <code class="language-plaintext highlighter-rouge">npm run build</code></li>
+  <li><strong>Start Production Server</strong>: <code class="language-plaintext highlighter-rouge">npm start</code></li>
+</ul>
+
+<h2 id="testing">Testing</h2>
+
+<p>This project uses a comprehensive suite of tests, including unit, integration, and end-to-end (e2e) tests. <strong>GitHub Actions</strong> handles automated testing in the CI/CD pipeline, and tests can also be run locally.</p>
+
+<ul>
+  <li><strong>Run Backend Tests</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>back
+npm run <span class="nb">test</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Run Frontend Tests</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ../front
+npm run <span class="nb">test</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="production-setup">Production Setup</h2>
+
+<h3 id="1-pm2-process-management">1. PM2 Process Management</h3>
+<p>Use PM2 to manage Node processes for a zero-downtime setup.</p>
+
+<ol>
+  <li><strong>Navigate to the <code class="language-plaintext highlighter-rouge">admin</code> folder</strong> and use the provided PM2 ecosystem file:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ../admin
+pm2 start ecosystem.config.js
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Monitor with PM2</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pm2 monit
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="2-nginx-configuration">2. Nginx Configuration</h3>
+<p>To serve the application with Nginx, use the provided configuration file in the <code class="language-plaintext highlighter-rouge">admin</code> folder:</p>
+
+<ol>
+  <li>
+    <p><strong>Copy Nginx Configuration</strong>:
+Place the <code class="language-plaintext highlighter-rouge">nginx.conf</code> from <code class="language-plaintext highlighter-rouge">admin</code> into your Nginx configuration directory (usually <code class="language-plaintext highlighter-rouge">/etc/nginx/sites-available</code>), and create a symbolic link in <code class="language-plaintext highlighter-rouge">/etc/nginx/sites-enabled</code>.</p>
+  </li>
+  <li>
+    <p><strong>Reload Nginx</strong>:</p>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl reload nginx
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="cicd-pipeline">CI/CD Pipeline</h2>
+
+<p>GitHub Actions are configured to handle automated testing and deployment. A self-hosted runner can be set up to speed up testing:</p>
+
+<ol>
+  <li>
+    <p><strong>Set Up Self-Hosted Runner</strong>:
+Follow the instructions in <code class="language-plaintext highlighter-rouge">.github/workflows/</code> to create a self-hosted runner for faster testing during development.</p>
+  </li>
+  <li>
+    <p><strong>Use GitHub Actions Commands</strong>:</p>
+    <ul>
+      <li>Refer to the <code class="language-plaintext highlighter-rouge">.pipeline.yml</code> file in <code class="language-plaintext highlighter-rouge">admin</code> for CI/CD setup.</li>
+      <li>The pipeline automates build, testing, and deployment steps as defined in GitHub Actions workflows.</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="documentation">Documentation</h2>
+
+<p>Full documentation is generated with <strong>Jekyll</strong> and is available in the <code class="language-plaintext highlighter-rouge">docs</code> folder. To view documentation locally:</p>
+
+<ol>
+  <li><strong>Navigate to <code class="language-plaintext highlighter-rouge">docs</code></strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ../docs
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Serve Documentation</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundle <span class="nb">exec </span>jekyll serve
+</code></pre></div>    </div>
+
+    <p>Documentation will be available at <code class="language-plaintext highlighter-rouge">http://localhost:4000</code>.</p>
+  </li>
+</ol>
+
+<p>For live documentation, visit <a href="https://nilsriga.github.io/currency/">https://nilsriga.github.io/currency/</a>.</p>
 </div>
 
       </div>
