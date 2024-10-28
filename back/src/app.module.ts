@@ -4,17 +4,19 @@
 import { Module } from '@nestjs/common';
 import { SentryModule } from '@sentry/nestjs/setup';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CurrencyModule } from './currency/currency.module';
 import { CurrencyRate } from './db/entities/CurrencyRate.entity'; // Import the CurrencyRate entity
-
 // Define the AppModule using the @Module decorator
 @Module({
   imports: [
     // Initialize Sentry for error tracking
     SentryModule.forRoot(),
+    // Initialize module for scheduling
+    ScheduleModule.forRoot(),
     // Initialize ConfigModule to manage environment variables
     ConfigModule.forRoot({
       isGlobal: true, // Make the configuration global

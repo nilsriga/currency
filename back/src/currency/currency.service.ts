@@ -20,7 +20,7 @@ export class CurrencyService {
   ) { }
 
   // Use the Cron decorator to schedule a task to run at specific times
-  @Cron('1 3,16 * * *')
+  @Cron('1 30 4,21 * * *')
   async handleCron() {
     // Call the fetchAndStoreRates method to fetch and store currency rates
     await this.fetchAndStoreRates();
